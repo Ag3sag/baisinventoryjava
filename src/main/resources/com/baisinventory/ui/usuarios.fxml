@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.baisinventory.controller.UsuariosController"
+            stylesheets="@usuarios.css"
+            prefWidth="700" prefHeight="700">
+
+    <HBox alignment="TOP_LEFT" style="-fx-padding: 10;">
+        <ImageView fx:id="logoGeneral" layoutX="10" layoutY="10" fitWidth="80" fitHeight="80" preserveRatio="true">
+            <image>
+                <Image url="@/images/Logo.png"/>
+            </image>
+        </ImageView>
+    </HBox>
+
+    <!-- Título arriba -->
+    <top>
+        <StackPane alignment="CENTER">
+            <Label text="Administración de Usuarios"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 20;"/>
+        </StackPane>
+    </top>
+
+    <!-- Contenido principal centrado -->
+    <center>
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20;" maxWidth="500">
+
+            <!-- Formulario -->
+            <VBox spacing="10" alignment="CENTER" maxWidth="400"
+                  style="-fx-padding: 15; -fx-background-color: #f9f9f9; -fx-background-radius: 10;">
+                <TextField fx:id="txtClaveAcceso" promptText="Clave de acceso" maxWidth="250"/>
+                <PasswordField fx:id="txtContrasena" promptText="Contraseña" maxWidth="250"/>
+
+                <!-- Botones en fila centrados -->
+                <HBox spacing="10" alignment="CENTER">
+                    <ComboBox fx:id="cmbRol" promptText="Seleccione rol" prefWidth="150"/>
+                    <Button fx:id="btnAgregar" text="+ Crear Usuario" prefWidth="150"/>
+                    <Button fx:id="btnEliminar" text="Eliminar" prefWidth="100"/>
+                </HBox>
+            </VBox>
+
+            <!-- Tabla de usuarios -->
+            <TableView fx:id="tablaUsuarios" prefHeight="250" maxWidth="500">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="100"/>
+                    <TableColumn fx:id="colClave" text="Clave" prefWidth="200"/>
+                    <TableColumn fx:id="colRol" text="Rol" prefWidth="200"/>
+                </columns>
+            </TableView>
+
+            <!-- Botón volver -->
+            <Button fx:id="btnVolver" text="⬅ Volver al inicio" maxWidth="200"/>
+        </VBox>
+    </center>
+</BorderPane>

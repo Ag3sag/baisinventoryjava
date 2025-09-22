@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.baisinventory.controller.ExportacionesController"
+            prefWidth="1000" prefHeight="800"
+            stylesheets="@exportaciones.css">
+    <HBox alignment="TOP_LEFT" style="-fx-padding: 10;">
+        <ImageView fx:id="logoGeneral" layoutX="10" layoutY="10" fitWidth="80" fitHeight="80" preserveRatio="true">
+            <image>
+                <Image url="@/images/Logo.png"/>
+            </image>
+        </ImageView>
+    </HBox>
+
+    <center>
+        <VBox spacing="15" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Título -->
+            <Label text="Gestión de Exportaciones" styleClass="h1"/>
+
+            <!-- Mensaje -->
+            <Label fx:id="lblMensaje" styleClass="mensaje" visible="false"/>
+
+            <!-- Formulario de creación -->
+            <VBox fx:id="vboxCrearExportacion" styleClass="form" spacing="10" alignment="CENTER">
+                <ComboBox fx:id="comboUbicacion" promptText="Selecciona ubicación"/>
+                <TextField fx:id="txtDestino" promptText="Destino de la exportación"/>
+                <ScrollPane fitToWidth="true" maxHeight="150">
+                    <VBox fx:id="vboxEnsambles" spacing="5"/>
+                </ScrollPane>
+                <Button fx:id="btnCrearExportacion" text="Crear Exportación" prefWidth="200"/>
+            </VBox>
+
+            <!-- Tabla de exportaciones -->
+            <TableView fx:id="tablaExportaciones" prefWidth="800" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID Exportación"/>
+                    <TableColumn fx:id="colUbicacion" text="Ubicación"/>
+                    <TableColumn fx:id="colDestino" text="Destino"/>
+                    <TableColumn fx:id="colResponsable" text="ID Responsable"/>
+                    <TableColumn fx:id="colAccion" text="Acciones"/>
+                </columns>
+            </TableView>
+
+            <!-- Botón volver centrado -->
+            <HBox alignment="CENTER">
+                <padding>
+                    <Insets top="10" bottom="10"/>
+                </padding>
+                <Button fx:id="btnVolver" text="Volver al inicio" prefWidth="200"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

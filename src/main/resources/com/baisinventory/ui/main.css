@@ -1,0 +1,47 @@
+.root {
+    -fx-alignment: center;
+    -fx-background-color: #f1f5f9;
+    -fx-font-family: "Inter", Arial, sans-serif;
+}
+
+.title {
+    -fx-font-size: 28px;
+    -fx-text-fill: #333;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.rol {
+    -fx-text-fill: #555;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.opciones {
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-wrap-text: true;
+}
+
+.opcion {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #1e293b;
+    -fx-font-weight: bold;
+    -fx-pref-width: 200px;
+    -fx-padding: 20;
+    -fx-alignment: center;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 2, 2);
+}
+
+.opcion:hover {
+    -fx-background-color: #cbd5e1;
+}
+
+.logout-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
