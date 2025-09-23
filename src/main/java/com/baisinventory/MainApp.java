@@ -13,7 +13,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(loader.load(), 400, 400);   // carga Login.fxml con tamaño 400x300
         stage.setScene(scene);
         stage.setTitle("Login - BAIS Inventory");          // título de la ventana
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon.png")));
+        stage.getIcons().add(new Image(getClass().getResource("/images/Logo.png").toExternalForm()));
         stage.show();                                      // muestra la ventana
     }
 
