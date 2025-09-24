@@ -2,7 +2,6 @@ package com.baisinventory.controller;
 
 import com.baisinventory.dao.Conexion;
 import com.baisinventory.model.Reporte;
-import com.baisinventory.service.ReporteService;
 import com.baisinventory.util.AppSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +13,8 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ReportesController {
@@ -28,14 +29,12 @@ public class ReportesController {
     @FXML private TextArea txtContenido;
     @FXML private Button btnCrear;
 
-    private ReporteService reporteService;
+    private Connection conn;
     private ObservableList<Reporte> listaReportes;
 
     public void initialize() {
         try {
-            Connection conn = Conexion.getConnection();
-            reporteService = new ReporteService(conn);
-
+            conn = Conexion.getConnection();
             comboTipo.getItems().addAll("Repuestos", "Ensambles", "Exportaciones", "Otro");
 
             cargarReportes();
@@ -48,9 +47,28 @@ public class ReportesController {
         }
     }
 
+    private ObservableList<Reporte> obtenerReportes() throws SQLException {
+        ObservableList<Reporte> reportes = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM reporte";
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Reporte r = new Reporte();
+                r.setIdReporte(rs.getInt("id_reporte"));
+                r.setTipo(rs.getString("tipo"));
+                r.setContenido(rs.getString("contenido"));
+                r.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
+                r.setIdUsuario(rs.getInt("id_usuario"));
+                r.setVisto(rs.getBoolean("visto"));
+                reportes.add(r);
+            }
+        }
+        return reportes;
+    }
+
     private void cargarReportes() {
         try {
-            listaReportes = FXCollections.observableArrayList(reporteService.listarReportes());
+            listaReportes = obtenerReportes();
             tablaReportes.setItems(listaReportes);
 
             colTipo.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getTipo()));
@@ -70,7 +88,7 @@ public class ReportesController {
                         btn.setOnAction(e -> {
                             Reporte r = getTableView().getItems().get(getIndex());
                             try {
-                                reporteService.marcarVisto(r.getIdReporte());
+                                marcarVisto(r.getIdReporte());
                                 cargarReportes();
                             } catch (SQLException ex) {
                                 ex.printStackTrace();
@@ -88,6 +106,16 @@ public class ReportesController {
         }
     }
 
+    private void guardarReporte(Reporte r) throws SQLException {
+        String sql = "INSERT INTO reporte (tipo, contenido, fecha, id_usuario, visto) VALUES (?, ?, NOW(), ?, false)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, r.getTipo());
+            ps.setString(2, r.getContenido());
+            ps.setInt(3, r.getIdUsuario());
+            ps.executeUpdate();
+        }
+    }
+
     private void crearReporte() {
         if (comboTipo.getValue() == null || txtContenido.getText().isEmpty()) {
             mostrarAlerta("Debe seleccionar un tipo y escribir un contenido.");
@@ -100,13 +128,21 @@ public class ReportesController {
         r.setIdUsuario(AppSession.getIdUsuario());
 
         try {
-            reporteService.crearReporte(r);
+            guardarReporte(r);
             cargarReportes();
             txtContenido.clear();
             comboTipo.getSelectionModel().clearSelection();
         } catch (SQLException e) {
             e.printStackTrace();
             mostrarAlerta("Error al crear el reporte: " + e.getMessage());
+        }
+    }
+
+    private void marcarVisto(int idReporte) throws SQLException {
+        String sql = "UPDATE reporte SET visto = true WHERE id_reporte = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idReporte);
+            ps.executeUpdate();
         }
     }
 
@@ -121,14 +157,9 @@ public class ReportesController {
     @FXML
     private void volverAlMenu() {
         try {
-            // Cargar FXML del menú principal
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/baisinventory/ui/MainView.fxml"));
             Parent root = loader.load();
-
-            // Crear la escena una sola vez
             Scene scene = new Scene(root);
-
-            // Obtener la ventana actual y asignarle la escena
             Stage stage = (Stage) btnVolver.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("Bais Inventory - Menú Principal");
