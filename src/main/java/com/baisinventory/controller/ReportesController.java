@@ -144,6 +144,18 @@ public class ReportesController {
             ps.setInt(1, idReporte);
             ps.executeUpdate();
         }
+
+        // Programar eliminación después de 5 segundos
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000); // esperar 5 segundos
+                eliminarReporte(idReporte);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private void mostrarAlerta(String mensaje) {
@@ -152,6 +164,13 @@ public class ReportesController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+    private void eliminarReporte(int idReporte) throws SQLException {
+        String sql = "DELETE FROM reporte WHERE id_reporte = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idReporte);
+            ps.executeUpdate();
+        }
     }
 
     @FXML

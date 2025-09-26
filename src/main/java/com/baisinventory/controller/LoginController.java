@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -56,10 +57,20 @@ public class LoginController {
                 stage.centerOnScreen();
                 stage.show();
             } else {
-                System.out.println("❌ Usuario o contraseña incorrectos");
+                // Mostrar popup de error
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error de inicio de sesión");
+                alert.setHeaderText(null);
+                alert.setContentText("Usuario o contraseña incorrectos");
+                alert.showAndWait();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de conexión");
+            alert.setHeaderText("No se pudo conectar con la base de datos");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 }

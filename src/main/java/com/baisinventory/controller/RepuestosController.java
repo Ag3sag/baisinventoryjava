@@ -104,6 +104,12 @@ public class RepuestosController {
 
         try {
             int cantidad = Integer.parseInt(cantidadStr);
+
+            if (cantidad <= 0) {
+                mostrarAlerta("Error", "La cantidad debe ser un número mayor que 0.");
+                return;
+            }
+
             try (Connection conn = Conexion.getConnection()) {
                 String sql = "INSERT INTO repuesto (nombre, cantidad, ubicacion) VALUES (?, ?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(sql);
@@ -158,7 +164,7 @@ public class RepuestosController {
             mainController.configurarOpcionesPorRol();
 
             Stage stage = (Stage) btnVolver.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
+            stage.setScene(new Scene(root));
             stage.setTitle("Bais Inventory - Menú Principal");
             stage.centerOnScreen();
             stage.show();
