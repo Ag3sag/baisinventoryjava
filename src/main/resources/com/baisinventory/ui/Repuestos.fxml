@@ -11,7 +11,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.baisinventory.controller.RepuestosController"
-            prefWidth="650" prefHeight="450"
+            prefWidth="1660" prefHeight="920"
             stylesheets="@repuestos.css">
 
     <HBox alignment="TOP_LEFT" style="-fx-padding: 10;">
@@ -33,6 +33,11 @@
     <center>
         <VBox spacing="15" alignment="CENTER" style="-fx-padding: 20;" maxWidth="600">
 
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Filtrar por ubicación:"/>
+                <ComboBox fx:id="comboUbicacion" promptText="Seleccione ubicación"/>
+            </HBox>
+
             <!-- Tabla -->
             <TableView fx:id="tablaRepuestos" prefHeight="220" maxWidth="600">
                 <columns>
@@ -40,6 +45,7 @@
                     <TableColumn fx:id="colNombre" text="Nombre" prefWidth="180"/>
                     <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="100"/>
                     <TableColumn fx:id="colUbicacion" text="Ubicación" prefWidth="120"/>
+                    <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="120"/>
                 </columns>
             </TableView>
 

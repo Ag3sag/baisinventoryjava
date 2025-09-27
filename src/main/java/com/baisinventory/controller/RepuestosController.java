@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -26,10 +27,12 @@ public class RepuestosController {
     @FXML private TableColumn<Repuesto, Integer> colCantidad;
     @FXML private TableColumn<Repuesto, String> colUbicacion;
 
+    @FXML private ComboBox<String> comboUbicacion; // filtro
+
     @FXML private TextField txtNombre;
     @FXML private TextField txtCantidad;
-    @FXML private ComboBox<String> cmbUbicacion;
-
+    @FXML private ComboBox<String> cmbUbicacion; // para agregar
+    @FXML private TableColumn<Repuesto, Void> colAcciones;
     @FXML private Button btnAgregar;
     @FXML private Button btnEliminar;
     @FXML private Button btnVolver;
@@ -51,13 +54,18 @@ public class RepuestosController {
         tablaRepuestos.setItems(listaRepuestos);
         tablaRepuestos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // ComboBox de ubicaciones
+        // ComboBox para agregar repuestos
         cmbUbicacion.getItems().addAll("A", "B", "C", "D");
+
+        // ComboBox de filtro
+        comboUbicacion.getItems().addAll("Todos", "A", "B", "C", "D");
+        comboUbicacion.setOnAction(e -> filtrarPorUbicacion());
 
         // Eventos de botones
         btnAgregar.setOnAction(e -> agregarRepuesto());
         btnEliminar.setOnAction(e -> eliminarRepuesto());
         btnVolver.setOnAction(e -> volverAlMenu());
+        agregarColumnaAcciones();
     }
 
     public void inicializarSesion() {
@@ -70,6 +78,36 @@ public class RepuestosController {
         btnEliminar.setVisible(isGerente);
 
         cargarRepuestos();
+    }
+
+    @FXML
+    private void filtrarPorUbicacion() {
+        String ubicacion = comboUbicacion.getValue();
+
+        if (ubicacion == null || ubicacion.isEmpty() || ubicacion.equals("Todos")) {
+            cargarRepuestos();
+            return;
+        }
+
+        listaRepuestos.clear();
+        try (Connection conn = Conexion.getConnection()) {
+            String sql = "SELECT * FROM repuesto WHERE ubicacion = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, ubicacion);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                listaRepuestos.add(new Repuesto(
+                        rs.getInt("id_repuesto"),
+                        rs.getString("nombre"),
+                        rs.getInt("cantidad"),
+                        rs.getString("ubicacion")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudieron filtrar los repuestos.");
+        }
     }
 
     private void cargarRepuestos() {
@@ -154,6 +192,29 @@ public class RepuestosController {
         }
     }
 
+    private void agregarColumnaAcciones() {
+        colAcciones.setCellFactory(col -> new TableCell<>() {
+            private final Button btnEditar = new Button("✏ Editar");
+
+            {
+                btnEditar.setOnAction(e -> {
+                    Repuesto repuesto = getTableView().getItems().get(getIndex());
+                    editarRepuesto(repuesto);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnEditar);
+                }
+            }
+        });
+    }
+
     @FXML
     private void volverAlMenu() {
         try {
@@ -179,5 +240,63 @@ public class RepuestosController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    private void editarRepuesto(Repuesto repuesto) {
+        // Crear el cuadro de diálogo
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Editar Repuesto");
+        dialog.setHeaderText("Modifica la cantidad y la ubicación");
+
+        // Campos editables
+        TextField txtCantidadEdit = new TextField(String.valueOf(repuesto.getCantidad()));
+        ComboBox<String> cmbUbicacionEdit = new ComboBox<>();
+        cmbUbicacionEdit.getItems().addAll("A", "B", "C", "D");
+        cmbUbicacionEdit.setValue(repuesto.getUbicacion());
+
+        // Contenedor
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.add(new Label("Cantidad:"), 0, 0);
+        grid.add(txtCantidadEdit, 1, 0);
+        grid.add(new Label("Ubicación:"), 0, 1);
+        grid.add(cmbUbicacionEdit, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        // Botones
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    int nuevaCantidad = Integer.parseInt(txtCantidadEdit.getText());
+                    String nuevaUbicacion = cmbUbicacionEdit.getValue();
+
+                    if (nuevaCantidad <= 0 || nuevaUbicacion == null) {
+                        mostrarAlerta("Error", "Valores inválidos.");
+                        return;
+                    }
+
+                    try (Connection conn = Conexion.getConnection()) {
+                        String sql = "UPDATE repuesto SET cantidad = ?, ubicacion = ? WHERE id_repuesto = ?";
+                        PreparedStatement stmt = conn.prepareStatement(sql);
+                        stmt.setInt(1, nuevaCantidad);
+                        stmt.setString(2, nuevaUbicacion);
+                        stmt.setInt(3, repuesto.getId());
+                        stmt.executeUpdate();
+
+                        mostrarAlerta("Éxito", "Repuesto actualizado correctamente.");
+                        cargarRepuestos();
+                    }
+                } catch (NumberFormatException ex) {
+                    mostrarAlerta("Error", "La cantidad debe ser un número válido.");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    mostrarAlerta("Error", "No se pudo actualizar el repuesto.");
+                }
+            }
+        });
     }
 }
