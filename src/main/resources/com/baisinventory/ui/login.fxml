@@ -22,7 +22,7 @@
     <HBox style="-fx-padding: 10;" alignment="CENTER">
         <ImageView fx:id="logoLogin" fitWidth="200" fitHeight="200" preserveRatio="true">
             <image>
-                <Image url="@/images/Logo.png"/>
+                <Image url="@../images/Logo.png"/>
             </image>
         </ImageView>
     </HBox>

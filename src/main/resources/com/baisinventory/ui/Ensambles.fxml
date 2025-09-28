@@ -14,7 +14,7 @@
     <HBox alignment="TOP_LEFT" style="-fx-padding: 10;">
         <ImageView fx:id="logoGeneral" layoutX="10" layoutY="10" fitWidth="80" fitHeight="80" preserveRatio="true">
             <image>
-                <Image url="@/images/Logo.png"/>
+                <Image url="@../images/Logo.png"/>
             </image>
         </ImageView>
     </HBox>

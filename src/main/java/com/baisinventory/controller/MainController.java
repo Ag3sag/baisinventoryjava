@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class MainController {
 
     @FXML private Button btnUsuarios;
@@ -65,17 +67,26 @@ public class MainController {
     }
 
     private void cerrarSesion() {
+        // Limpia la sesión
         AppSession.clear();
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/baisinventory/ui/Login.fxml"));
+            // Carga el FXML del login
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/baisinventory/ui/login.fxml"));
             Parent root = loader.load();
 
-            Stage stage = (Stage) btnLogout.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Login - Bais Inventory");
-            stage.centerOnScreen();
-            stage.show();
-        } catch (Exception e) {
+            // Crear un nuevo Stage para el login
+            Stage loginStage = new Stage();
+            loginStage.setScene(new Scene(root));
+            loginStage.setTitle("Login - Bais Inventory");
+            loginStage.centerOnScreen();
+            loginStage.show();
+
+            // Cierra la ventana principal actual
+            Stage currentStage = (Stage) btnLogout.getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
