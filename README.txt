@@ -6,9 +6,9 @@ __________________________________________________
 
 Tecnologías utilizadas
 
-Lenguaje: Java SE 25
+Lenguaje: Java 17
 
-Interfaz gráfica: JavaFX 25
+Interfaz gráfica: JavaFX 17 SDK
 
 Base de datos: MySQL
 
@@ -66,4 +66,29 @@ private static final String PASSWORD = "tu contraseña";
 ___________________________________________________________
 Ejecutar la clase MainApp.java. (debes tener instalado javafx-sdk-21 o superior)
 __________________________________________________________________________
+Base de datos MySQL
 
+Base: bais_inventory
+
+Usuario: root
+
+Contraseña: root1234
+
+Ajusta los datos en Conexion.java si tu MySQL tiene credenciales distintas.
+___________________________________________________________________________
+JAR sombreado (shaded) con todas las dependencias incluidas.
+
+Contiene todos los recursos: .fxml, .css, imágenes y librerías necesarias.
+______________________________________________________________________________
+Ejecuta el JAR con JavaFX:
+java --module-path "C:\Program Files\Java\javafx-sdk-17.0.16\lib" --add-modules javafx.controls,javafx.fxml -jar bais-inventory-1.0-SNAPSHOT-shaded.jar
+Nota: Cambia la ruta de --module-path según dónde tengas instalado JavaFX.
+___________________________________________________________________________________________________________________________________________
+Consideraciones
+
+Todos los archivos .fxml, .css y recursos están incluidos dentro del JAR.
+
+Si hay problemas de conexión a la base de datos, revisa las credenciales en Conexion.java.
+
+Compatible con Windows 10/11 con Java 17.
+__________________________________________________________________
