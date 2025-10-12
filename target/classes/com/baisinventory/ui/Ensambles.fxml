@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.baisinventory.controller.EnsamblesController"
+            prefWidth="1660" prefHeight="920"
+            stylesheets="@ensambles.css">
+
+    <!-- Título superior -->
+    <HBox alignment="TOP_LEFT" style="-fx-padding: 10;">
+        <ImageView fx:id="logoGeneral" layoutX="10" layoutY="10" fitWidth="80" fitHeight="80" preserveRatio="true">
+            <image>
+                <Image url="@../images/Logo.png"/>
+            </image>
+        </ImageView>
+    </HBox>
+    <top>
+        <StackPane alignment="CENTER">
+            <Label text="🛠 Gestión de Ensambles"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 15;" />
+        </StackPane>
+    </top>
+
+    <center>
+        <!-- Contenedor principal centrado -->
+        <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;" maxWidth="650">
+
+            <!-- Formulario visible solo para gerentes -->
+            <VBox fx:id="formularioGerente" spacing="12" alignment="CENTER" maxWidth="400"
+                  style="-fx-padding: 15; -fx-background-color: #f9f9f9; -fx-background-radius: 10;">
+                <Label text="➕ Crear Ensamble"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Nombre:" minWidth="100"/>
+                    <TextField fx:id="txtNombre" promptText="Nombre del ensamble" prefWidth="200"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Ubicación:" minWidth="100"/>
+                    <ComboBox fx:id="cmbUbicacion" promptText="Seleccione ubicación" prefWidth="200"/>
+                </HBox>
+
+                <VBox spacing="5" alignment="CENTER_LEFT">
+                    <Label text="Repuestos:" />
+                    <ListView fx:id="listaRepuestos" prefHeight="120" prefWidth="250"/>
+                </VBox>
+
+                <Button fx:id="btnCrear" text="➕ Agregar Ensamble"
+                        styleClass="primary-button"
+                        onAction="#crearEnsamble"/>
+            </VBox>
+
+            <!-- Tabla de ensambles -->
+            <TableView  fx:id="tablaEnsambles" prefHeight="250" maxWidth="600">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200"/>
+                    <TableColumn fx:id="colUbicacion" text="Ubicación" prefWidth="120"/>
+                    <TableColumn fx:id="colResponsable" text="ID Responsable" prefWidth="120"/>
+                </columns>
+            </TableView>
+
+            <!-- Lista de repuestos de un ensamble seleccionado -->
+            <VBox spacing="5" alignment="CENTER_LEFT" maxWidth="600"
+                  style="-fx-padding: 10; -fx-background-color: #f2f2f2; -fx-background-radius: 8;">
+                <Label text="🔍 Repuestos del Ensamble Seleccionado"
+                       style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                <ListView fx:id="listaRepuestosEnsamble" prefHeight="120" prefWidth="580"/>
+            </VBox>
+
+            <!-- Botones -->
+            <HBox spacing="15" alignment="CENTER">
+                <Button fx:id="btnEliminar" text="🗑 Eliminar Seleccionado" />
+                <Button fx:id="btnVolver" text="⬅ Volver al Menú" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

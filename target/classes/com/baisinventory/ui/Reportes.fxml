@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.baisinventory.controller.ReportesController"
+            prefWidth="800" prefHeight="600"
+            stylesheets="@reportes.css">
+
+    <HBox alignment="TOP_LEFT" style="-fx-padding: 10;">
+        <ImageView fx:id="logoGeneral" layoutX="10" layoutY="10" fitWidth="80" fitHeight="80" preserveRatio="true">
+            <image>
+                <Image url="@../images/Logo.png"/>
+            </image>
+        </ImageView>
+    </HBox>
+
+    <VBox spacing="15" alignment="CENTER" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+
+        <!-- Título -->
+        <Label text="Reportes" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+        <!-- Formulario de creación -->
+        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="formulario">
+            <ComboBox fx:id="comboTipo" promptText="Selecciona tipo de reporte" prefWidth="200" styleClass="combo-box"/>
+            <TextArea fx:id="txtContenido" promptText="Contenido del reporte..." prefRowCount="2" prefWidth="400" styleClass="text-area"/>
+            <Button fx:id="btnCrear" text="Crear Reporte" styleClass="button"/>
+        </HBox>
+
+        <!-- Tabla de reportes -->
+        <TableView fx:id="tablaReportes" prefHeight="400" VBox.vgrow="ALWAYS" styleClass="table-view" >
+
+            <columns>
+                <TableColumn fx:id="colTipo" text="Tipo" />
+                <TableColumn fx:id="colContenido" text="Contenido" />
+                <TableColumn fx:id="colFecha" text="Fecha" />
+                <TableColumn fx:id="colUsuario" text="Usuario" />
+                <TableColumn fx:id="colAccion" text="Acción" />
+            </columns>
+        </TableView>
+
+        <!-- Botón volver -->
+        <HBox spacing="15" alignment="CENTER" styleClass="volver">
+            <Button fx:id="btnVolver" text="Volver al menú" onAction="#volverAlMenu" styleClass="button"/>
+        </HBox>
+
+    </VBox>
+</AnchorPane>

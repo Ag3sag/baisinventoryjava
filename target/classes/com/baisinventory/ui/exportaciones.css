@@ -1,0 +1,54 @@
+.root {
+    -fx-font-family: Arial;
+    -fx-background-color: #f1f5f9;
+    -fx-padding: 40;
+}
+
+.h1 {
+    -fx-font-size: 24px;
+    -fx-text-alignment: center;
+    -fx-padding: 0 0 30 0;
+}
+
+.form {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1),5,0,0,0);
+}
+
+.button {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-padding: 8 15;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #2563eb;
+}
+
+.label.mensaje {
+    -fx-background-color: #d1fae5;
+    -fx-text-fill: #3b82f6;
+    -fx-alignment: center;
+    -fx-padding: 10;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+/* Tabla */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.table-view .column-header {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}

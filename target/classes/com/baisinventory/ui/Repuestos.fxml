@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.baisinventory.controller.RepuestosController"
+            prefWidth="1660" prefHeight="920"
+            stylesheets="@repuestos.css">
+
+    <HBox alignment="TOP_LEFT" style="-fx-padding: 10;">
+        <ImageView fx:id="logoGeneral" layoutX="10" layoutY="10" fitWidth="80" fitHeight="80" preserveRatio="true">
+            <image>
+                <Image url="@../images/Logo.png"/>
+            </image>
+        </ImageView>
+    </HBox>
+
+    <!-- Título -->
+    <top>
+        <StackPane alignment="CENTER">
+            <Label text="🔧 Gestión de Repuestos"
+                   styleClass="title-label"/>
+        </StackPane>
+    </top>
+
+    <center>
+        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 20;" maxWidth="600">
+
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Filtrar por ubicación:"/>
+                <ComboBox fx:id="comboUbicacion" promptText="Seleccione ubicación"/>
+            </HBox>
+
+            <!-- Tabla -->
+            <TableView fx:id="tablaRepuestos" prefHeight="220" maxWidth="600">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="colNombre" text="Nombre" prefWidth="180"/>
+                    <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="100"/>
+                    <TableColumn fx:id="colUbicacion" text="Ubicación" prefWidth="120"/>
+                    <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="120"/>
+                </columns>
+            </TableView>
+
+            <!-- Formulario -->
+            <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+                <TextField fx:id="txtNombre" promptText="Nombre" prefWidth="150"/>
+                <TextField fx:id="txtCantidad" promptText="Cantidad" prefWidth="100"/>
+                <ComboBox fx:id="cmbUbicacion" promptText="Ubicación" prefWidth="120"/>
+                <Button fx:id="btnAgregar" text="➕ Agregar" styleClass="primary-button"/>
+                <Button fx:id="btnEliminar" text="🗑 Eliminar" styleClass="danger-button"/>
+            </HBox>
+
+            <!-- Botón volver -->
+            <HBox spacing="10" alignment="CENTER">
+                <Button fx:id="btnVolver" text="⬅ Volver al Menú" styleClass="secondary-button"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,0 +1,75 @@
+.root {
+    -fx-background-color: #f1f5f9;
+    -fx-font-family: "Arial", sans-serif;
+}
+
+/* 🔹 Título */
+.title-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-padding: 15px;
+}
+
+/* 🔹 Botones */
+.button {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-padding: 8 15;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.primary-button {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+}
+
+.primary-button:hover {
+    -fx-background-color: #2563eb;
+}
+
+.danger-button {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+}
+
+.danger-button:hover {
+    -fx-background-color: #dc2626;
+}
+
+.secondary-button {
+    -fx-background-color: #64748b;
+    -fx-text-fill: white;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #475569;
+}
+
+/* 🔹 Campos de texto y ComboBox */
+.text-field, .combo-box {
+    -fx-padding: 8px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #ccc;
+}
+
+/* 🔹 Tabla */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #bfdbfe;
+}
