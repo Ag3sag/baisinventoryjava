@@ -81,7 +81,7 @@ JAR sombreado (shaded) con todas las dependencias incluidas.
 Contiene todos los recursos: .fxml, .css, imágenes y librerías necesarias.
 ______________________________________________________________________________
 Ejecuta el JAR con JavaFX:
-java --module-path "C:\Program Files\Java\javafx-sdk-17.0.16\lib" --add-modules javafx.controls,javafx.fxml -jar target\bais-inventory-1.0-SNAPSHOT-shaded.jar
+java --module-path "C:\Program Files\Java\javafx-sdk-17.0.16\lib" --add-modules javafx.controls,javafx.fxml -jar target\bais-inventory-1.0-SNAPSHOT.jar
 Nota: Cambia la ruta de --module-path según dónde tengas instalado JavaFX.
 ___________________________________________________________________________________________________________________________________________
 Consideraciones

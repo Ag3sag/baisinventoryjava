@@ -2,14 +2,33 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="bais-inventory:jar" />
+      <artifact name="baisinventory:jar" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d561db09-8d98-4508-be41-c7a0dd6098c1" name="Changes" comment="Primer commit del proyecto" />
+    <list default="true" id="d561db09-8d98-4508-be41-c7a0dd6098c1" name="Changes" comment="Primer commit del proyecto">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/baisinventory_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/bais_inventory_jar/bais-inventory.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/bais_inventory_jar/bais-inventory.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT-shaded.jar" beforeDir="false" afterPath="$PROJECT_DIR$/artifacts/baisinventory_jar/baisinventory.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/EnsamblesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/EnsamblesController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/MainController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ReportesController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ReportesController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ReportesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ReportesController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/RepuestosController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/RepuestosController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/RepuestosController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/RepuestosController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/UsuariosController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/UsuariosController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-bais-inventory-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-bais-inventory-1.0-SNAPSHOT.jar" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,7 +90,7 @@
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Documents/Tareas Sena/trabajos/Barnes inventory system/baisinventory&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;D:/Documents/Tareas Sena/trabajos/Barnes inventory system/baisinventory/src/main/java/org/baisinventory/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.35747126&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;build.tools&quot;
