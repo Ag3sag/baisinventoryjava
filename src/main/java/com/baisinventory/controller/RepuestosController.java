@@ -1,23 +1,27 @@
 package com.baisinventory.controller;
 
-import com.baisinventory.model.Repuesto;
 import com.baisinventory.dao.Conexion;
+import com.baisinventory.dao.RepuestoDAO;
+import com.baisinventory.model.Repuesto;
 import com.baisinventory.util.AppSession;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+
 import javafx.stage.Stage;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.List;
 
 public class RepuestosController {
 
@@ -27,202 +31,199 @@ public class RepuestosController {
     @FXML private TableColumn<Repuesto, Integer> colCantidad;
     @FXML private TableColumn<Repuesto, String> colUbicacion;
 
-    @FXML private ComboBox<String> comboUbicacion; // filtro
+    @FXML private ComboBox<String> comboUbicacion;
 
     @FXML private TextField txtNombre;
     @FXML private TextField txtCantidad;
-    @FXML private ComboBox<String> cmbUbicacion; // para agregar
+    @FXML private ComboBox<String> cmbUbicacion;
+
     @FXML private TableColumn<Repuesto, Void> colAcciones;
+
     @FXML private Button btnAgregar;
     @FXML private Button btnEliminar;
     @FXML private Button btnVolver;
 
     private ObservableList<Repuesto> listaRepuestos;
+    private RepuestoDAO repuestoDAO;
+
     private String rol;
-    private int idUsuarioLogueado;
 
     @FXML
     public void initialize() {
-        // Configuración de columnas
+
+        try {
+            Connection conn = Conexion.getConnection();
+            repuestoDAO = new RepuestoDAO(conn);
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo conectar a la base de datos.");
+            return;
+        }
+
+        listaRepuestos = FXCollections.observableArrayList();
+        tablaRepuestos.setItems(listaRepuestos);
+
         colId.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getId()).asObject());
         colNombre.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNombre()));
         colCantidad.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getCantidad()).asObject());
         colUbicacion.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getUbicacion()));
 
-        // Inicializar lista y tabla
-        listaRepuestos = FXCollections.observableArrayList();
-        tablaRepuestos.setItems(listaRepuestos);
-        tablaRepuestos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        // ComboBox para agregar repuestos
         cmbUbicacion.getItems().addAll("A", "B", "C", "D");
 
-        // ComboBox de filtro
         comboUbicacion.getItems().addAll("Todos", "A", "B", "C", "D");
         comboUbicacion.setOnAction(e -> filtrarPorUbicacion());
 
-        // Eventos de botones
         btnAgregar.setOnAction(e -> agregarRepuesto());
         btnEliminar.setOnAction(e -> eliminarRepuesto());
         btnVolver.setOnAction(e -> volverAlMenu());
+
         agregarColumnaAcciones();
     }
 
     public void inicializarSesion() {
         this.rol = AppSession.getRol();
-        this.idUsuarioLogueado = AppSession.getIdUsuario();
-
-        // Mostrar/ocultar botones según rol
-        boolean isGerente = "gerente".equalsIgnoreCase(rol);
-        btnAgregar.setVisible(isGerente);
-        btnEliminar.setVisible(isGerente);
 
         cargarRepuestos();
-    }
 
-    @FXML
-    private void filtrarPorUbicacion() {
-        String ubicacion = comboUbicacion.getValue();
-
-        if (ubicacion == null || ubicacion.isEmpty() || ubicacion.equals("Todos")) {
-            cargarRepuestos();
-            return;
-        }
-
-        listaRepuestos.clear();
-        try (Connection conn = Conexion.getConnection()) {
-            String sql = "SELECT * FROM repuesto WHERE ubicacion = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, ubicacion);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                listaRepuestos.add(new Repuesto(
-                        rs.getInt("id_repuesto"),
-                        rs.getString("nombre"),
-                        rs.getInt("cantidad"),
-                        rs.getString("ubicacion")
-                ));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            mostrarAlerta("Error", "No se pudieron filtrar los repuestos.");
+        if ("trabajador".equalsIgnoreCase(rol)) {
+            btnAgregar.setVisible(false);
+            btnEliminar.setVisible(false);
+            txtNombre.setDisable(true);
+            txtCantidad.setDisable(true);
+            cmbUbicacion.setDisable(true);
         }
     }
 
     private void cargarRepuestos() {
-        listaRepuestos.clear();
-        try (Connection conn = Conexion.getConnection()) {
-            String sql = "SELECT * FROM repuesto";
-            ResultSet rs = conn.createStatement().executeQuery(sql);
-
-            while (rs.next()) {
-                listaRepuestos.add(new Repuesto(
-                        rs.getInt("id_repuesto"),
-                        rs.getString("nombre"),
-                        rs.getInt("cantidad"),
-                        rs.getString("ubicacion")
-                ));
-            }
+        try {
+            List<Repuesto> lista = repuestoDAO.listarRepuestos();
+            listaRepuestos.setAll(lista);
         } catch (Exception e) {
-            e.printStackTrace();
             mostrarAlerta("Error", "No se pudieron cargar los repuestos.");
         }
     }
 
-    private void agregarRepuesto() {
-        String nombre = txtNombre.getText();
-        String cantidadStr = txtCantidad.getText();
-        String ubicacion = cmbUbicacion.getValue();
+    private void filtrarPorUbicacion() {
+        String ubic = comboUbicacion.getValue();
 
-        if (nombre.isEmpty() || cantidadStr.isEmpty() || ubicacion == null) {
+        if (ubic == null || ubic.equals("Todos")) {
+            cargarRepuestos();
+            return;
+        }
+
+        try {
+            List<Repuesto> lista = repuestoDAO.listarPorUbicacion(ubic);
+            listaRepuestos.setAll(lista);
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo filtrar.");
+        }
+    }
+
+    private void agregarRepuesto() {
+
+        String nombre = txtNombre.getText().trim();
+        String cantidadStr = txtCantidad.getText().trim();
+        String ubic = cmbUbicacion.getValue();
+
+        if (nombre.isEmpty() || cantidadStr.isEmpty() || ubic == null) {
             mostrarAlerta("Error", "Todos los campos son obligatorios.");
             return;
         }
 
         try {
-            int cantidad = Integer.parseInt(cantidadStr);
+            int cant = Integer.parseInt(cantidadStr);
 
-            if (cantidad <= 0) {
-                mostrarAlerta("Error", "La cantidad debe ser un número mayor que 0.");
+            if (cant <= 0) {
+                mostrarAlerta("Error", "La cantidad debe ser mayor a 0.");
                 return;
             }
 
-            try (Connection conn = Conexion.getConnection()) {
-                String sql = "INSERT INTO repuesto (nombre, cantidad, ubicacion) VALUES (?, ?, ?)";
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, nombre);
-                stmt.setInt(2, cantidad);
-                stmt.setString(3, ubicacion);
-                stmt.executeUpdate();
+            Repuesto r = new Repuesto(0, nombre, cant, ubic);
+            repuestoDAO.insertarRepuesto(r);
 
-                mostrarAlerta("Éxito", "Repuesto agregado correctamente.");
-                cargarRepuestos();
+            mostrarAlerta("Éxito", "Repuesto agregado.");
+            cargarRepuestos();
 
-                txtNombre.clear();
-                txtCantidad.clear();
-                cmbUbicacion.setValue(null);
-            }
-        } catch (NumberFormatException ex) {
-            mostrarAlerta("Error", "La cantidad debe ser un número entero.");
+            txtNombre.clear();
+            txtCantidad.clear();
+            cmbUbicacion.getSelectionModel().clearSelection();
+
+        } catch (NumberFormatException e) {
+            mostrarAlerta("Error", "La cantidad debe ser un número.");
         } catch (Exception e) {
-            e.printStackTrace();
             mostrarAlerta("Error", "No se pudo agregar el repuesto.");
         }
     }
 
     private void eliminarRepuesto() {
-        Repuesto seleccionado = tablaRepuestos.getSelectionModel().getSelectedItem();
-        if (seleccionado == null) {
-            mostrarAlerta("Error", "Selecciona un repuesto para eliminar.");
+        Repuesto rep = tablaRepuestos.getSelectionModel().getSelectedItem();
+
+        if (rep == null) {
+            mostrarAlerta("Error", "Selecciona un repuesto.");
             return;
         }
 
-        try (Connection conn = Conexion.getConnection()) {
-            String sql = "DELETE FROM repuesto WHERE id_repuesto = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, seleccionado.getId());
-            stmt.executeUpdate();
-
-            mostrarAlerta("Éxito", "Repuesto eliminado correctamente.");
+        try {
+            repuestoDAO.eliminarRepuesto(rep.getId());
+            mostrarAlerta("Éxito", "Repuesto eliminado.");
             cargarRepuestos();
         } catch (Exception e) {
-            e.printStackTrace();
-            mostrarAlerta("Error", "No se pudo eliminar el repuesto.");
+            mostrarAlerta("Error", "No se pudo eliminar.");
         }
     }
 
     private void agregarColumnaAcciones() {
         colAcciones.setCellFactory(col -> new TableCell<>() {
-            private final Button btnEditar = new Button("✏ Editar");
+            private final Button btn = new Button("✏ Editar");
 
             {
-                btnEditar.setOnAction(e -> {
-                    Repuesto repuesto = getTableView().getItems().get(getIndex());
-                    editarRepuesto(repuesto);
+                btn.setOnAction(e -> {
+                    Repuesto rep = getTableView().getItems().get(getIndex());
+                    editarRepuesto(rep);
                 });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnEditar);
-                }
+                setGraphic(empty ? null : btn);
             }
         });
     }
 
-    @FXML
+    private void editarRepuesto(Repuesto r) {
+
+        TextInputDialog cantDialog = new TextInputDialog(String.valueOf(r.getCantidad()));
+        cantDialog.setHeaderText("Editar cantidad");
+        var resultCant = cantDialog.showAndWait();
+
+        if (resultCant.isEmpty()) return;
+
+        try {
+            int nuevaCantidad = Integer.parseInt(resultCant.get());
+
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(r.getUbicacion(), "A", "B", "C", "D");
+            dialog.setHeaderText("Editar ubicación");
+            var resultUbic = dialog.showAndWait();
+
+            if (resultUbic.isEmpty()) return;
+
+            String nuevaUbic = resultUbic.get();
+
+            r.setCantidad(nuevaCantidad);
+            r.setUbicacion(nuevaUbic);
+
+            repuestoDAO.actualizarRepuesto(r);
+            cargarRepuestos();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Valores inválidos.");
+        }
+    }
+
     private void volverAlMenu() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/baisinventory/ui/MainView.fxml"));
             Parent root = loader.load();
-
-            MainController mainController = loader.getController();
-            mainController.configurarOpcionesPorRol();
 
             Stage stage = (Stage) btnVolver.getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -230,7 +231,7 @@ public class RepuestosController {
             stage.centerOnScreen();
             stage.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo volver al menú.");
         }
     }
 
@@ -240,63 +241,5 @@ public class RepuestosController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
-    }
-
-    private void editarRepuesto(Repuesto repuesto) {
-        // Crear el cuadro de diálogo
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Editar Repuesto");
-        dialog.setHeaderText("Modifica la cantidad y la ubicación");
-
-        // Campos editables
-        TextField txtCantidadEdit = new TextField(String.valueOf(repuesto.getCantidad()));
-        ComboBox<String> cmbUbicacionEdit = new ComboBox<>();
-        cmbUbicacionEdit.getItems().addAll("A", "B", "C", "D");
-        cmbUbicacionEdit.setValue(repuesto.getUbicacion());
-
-        // Contenedor
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.add(new Label("Cantidad:"), 0, 0);
-        grid.add(txtCantidadEdit, 1, 0);
-        grid.add(new Label("Ubicación:"), 0, 1);
-        grid.add(cmbUbicacionEdit, 1, 1);
-
-        dialog.getDialogPane().setContent(grid);
-
-        // Botones
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        dialog.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    int nuevaCantidad = Integer.parseInt(txtCantidadEdit.getText());
-                    String nuevaUbicacion = cmbUbicacionEdit.getValue();
-
-                    if (nuevaCantidad <= 0 || nuevaUbicacion == null) {
-                        mostrarAlerta("Error", "Valores inválidos.");
-                        return;
-                    }
-
-                    try (Connection conn = Conexion.getConnection()) {
-                        String sql = "UPDATE repuesto SET cantidad = ?, ubicacion = ? WHERE id_repuesto = ?";
-                        PreparedStatement stmt = conn.prepareStatement(sql);
-                        stmt.setInt(1, nuevaCantidad);
-                        stmt.setString(2, nuevaUbicacion);
-                        stmt.setInt(3, repuesto.getId());
-                        stmt.executeUpdate();
-
-                        mostrarAlerta("Éxito", "Repuesto actualizado correctamente.");
-                        cargarRepuestos();
-                    }
-                } catch (NumberFormatException ex) {
-                    mostrarAlerta("Error", "La cantidad debe ser un número válido.");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    mostrarAlerta("Error", "No se pudo actualizar el repuesto.");
-                }
-            }
-        });
     }
 }

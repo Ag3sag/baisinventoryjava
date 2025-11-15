@@ -1,64 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.baisinventory.controller.ExportacionesController"
-            prefWidth="1000" prefHeight="800"
+            prefWidth="1660" prefHeight="920"
             stylesheets="@exportaciones.css">
-    <HBox alignment="TOP_LEFT" style="-fx-padding: 10;">
-        <ImageView fx:id="logoGeneral" layoutX="10" layoutY="10" fitWidth="80" fitHeight="80" preserveRatio="true">
-            <image>
-                <Image url="@../images/Logo.png"/>
-            </image>
-        </ImageView>
-    </HBox>
 
-    <center>
-        <VBox spacing="15" alignment="TOP_CENTER">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
+    <!-- Contenedor central que centra todo -->
+    <VBox fx:id="rootVBox" alignment="CENTER" spacing="20"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
-            <!-- Título -->
-            <Label text="Gestión de Exportaciones" styleClass="h1"/>
+        <!-- Logo centrado -->
+        <HBox alignment="CENTER">
+            <ImageView fx:id="logoGeneral" fitWidth="80" fitHeight="80" preserveRatio="true">
+                <image>
+                    <Image url="@../images/Logo.png"/>
+                </image>
+            </ImageView>
+        </HBox>
 
-            <!-- Mensaje -->
-            <Label fx:id="lblMensaje" styleClass="mensaje" visible="false"/>
+        <!-- Título -->
+        <Label text="📦 Gestión de Exportaciones"
+               style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
 
-            <!-- Formulario de creación -->
-            <VBox fx:id="vboxCrearExportacion" styleClass="form" spacing="10" alignment="CENTER">
-                <ComboBox fx:id="comboUbicacion" promptText="Selecciona ubicación"/>
-                <TextField fx:id="txtDestino" promptText="Destino de la exportación"/>
-                <ScrollPane fitToWidth="true" maxHeight="150">
-                    <VBox fx:id="vboxEnsambles" spacing="5"/>
-                </ScrollPane>
-                <Button fx:id="btnCrearExportacion" text="Crear Exportación" prefWidth="200"/>
-            </VBox>
+        <!-- Formulario de exportación -->
+        <VBox spacing="10"
+              alignment="CENTER"
+              maxWidth="400"
+              style="-fx-padding: 15; -fx-background-color: #f9f9f9; -fx-background-radius: 10;">
 
-            <!-- Tabla de exportaciones -->
-            <TableView fx:id="tablaExportaciones" prefWidth="800" prefHeight="300">
-                <columns>
-                    <TableColumn fx:id="colId" text="ID Exportación"/>
-                    <TableColumn fx:id="colUbicacion" text="Ubicación"/>
-                    <TableColumn fx:id="colDestino" text="Destino"/>
-                    <TableColumn fx:id="colResponsable" text="ID Responsable"/>
-                    <TableColumn fx:id="colAccion" text="Acciones"/>
-                </columns>
-            </TableView>
+            <Label text="➕ Nueva Exportación" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 
-            <!-- Botón volver centrado -->
-            <HBox alignment="CENTER">
-                <padding>
-                    <Insets top="10" bottom="10"/>
-                </padding>
-                <Button fx:id="btnVolver" text="Volver al inicio" prefWidth="200"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Ubicación:" minWidth="100"/>
+                <TextField fx:id="txtUbicacion" promptText="Ubicación de origen" prefWidth="200"/>
             </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Destino:" minWidth="100"/>
+                <TextField fx:id="txtDestino" promptText="Destino" prefWidth="200"/>
+            </HBox>
+
+            <Button fx:id="btnCrear" text="➕ Agregar Exportación" styleClass="primary-button"/>
         </VBox>
-    </center>
-</BorderPane>
+
+        <!-- Tabla de exportaciones -->
+        <TableView fx:id="tablaExportaciones" prefHeight="300" maxWidth="800">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                <TableColumn fx:id="colUbicacion" text="Ubicación" prefWidth="200"/>
+                <TableColumn fx:id="colDestino" text="Destino" prefWidth="200"/>
+                <TableColumn fx:id="colResponsable" text="ID Responsable" prefWidth="120"/>
+            </columns>
+        </TableView>
+
+
+        <!-- Botón volver -->
+        <HBox alignment="CENTER" spacing="10">
+            <Button fx:id="btnEliminar" text="🗑 Eliminar Seleccionada" styleClass="danger-button"/>
+            <Button fx:id="btnVolver" text="⬅ Volver al Menú" styleClass="button"/>
+        </HBox>
+
+    </VBox>
+</AnchorPane>

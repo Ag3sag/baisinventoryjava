@@ -5,6 +5,7 @@ D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\controller\UsuariosController.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\TestConexion.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\util\HashUtil.java
+D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\util\ViewUtils.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\controller\LoginController.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\controller\MainController.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\util\AppSession.java
@@ -15,6 +16,7 @@ D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\dao\UsuarioDAO.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\controller\ReportesController.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\controller\RepuestosController.java
+D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\dao\RepuestoDAO.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\model\Reporte.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\dao\ExportacionDAO.java
 D:\Documents\Tareas Sena\trabajos\Barnes inventory system\baisinventory\src\main\java\com\baisinventory\model\Usuario.java

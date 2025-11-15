@@ -1,21 +1,23 @@
 package com.baisinventory.controller;
 
 import com.baisinventory.dao.Conexion;
+import com.baisinventory.dao.UsuarioDAO;
 import com.baisinventory.model.Usuario;
 import com.baisinventory.util.AppSession;
 import com.baisinventory.util.HashUtil;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.List;
 
 public class UsuariosController {
 
@@ -27,40 +29,41 @@ public class UsuariosController {
     @FXML private TextField txtClaveAcceso;
     @FXML private PasswordField txtContrasena;
     @FXML private ComboBox<String> cmbRol;
+
     @FXML private Button btnAgregar;
     @FXML private Button btnEliminar;
     @FXML private Button btnVolver;
 
     private ObservableList<Usuario> listaUsuarios;
+    private UsuarioDAO usuarioDAO;
     private String rol;
-    private int idUsuarioLogueado;
 
     @FXML
     private void initialize() {
-        // Configura columnas
+
+        try {
+            Connection conn = Conexion.getConnection();
+            usuarioDAO = new UsuarioDAO(conn);
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo conectar a la base de datos.");
+            return;
+        }
+
+        listaUsuarios = FXCollections.observableArrayList();
+        tablaUsuarios.setItems(listaUsuarios);
+
         colId.setCellValueFactory(c -> new javafx.beans.property.SimpleIntegerProperty(c.getValue().getId()).asObject());
         colClave.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getClaveAcceso()));
         colRol.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getRol()));
 
-        // Inicializa lista y la vincula a la tabla
-        listaUsuarios = FXCollections.observableArrayList();
-        tablaUsuarios.setItems(listaUsuarios);
+        cmbRol.getItems().addAll("gerente", "trabajador");
 
-        // Combo de roles
-        cmbRol.getItems().addAll("Gerente", "Trabajador");
-
-        // Botones
         btnAgregar.setOnAction(e -> agregarUsuario());
         btnEliminar.setOnAction(e -> eliminarUsuario());
         btnVolver.setOnAction(e -> volverAlMenu());
     }
 
-    /**
-     * Este método debe llamarse desde quien abra la ventana
-     * para cargar usuarios y aplicar restricciones según el rol.
-     */
     public void inicializarSesion() {
-        this.idUsuarioLogueado = AppSession.getIdUsuario();
         this.rol = AppSession.getRol();
 
         cargarUsuarios();
@@ -69,43 +72,27 @@ public class UsuariosController {
 
     private void aplicarRestriccionesPorRol() {
         if ("trabajador".equalsIgnoreCase(rol)) {
-            btnAgregar.setVisible(false);
-            btnEliminar.setVisible(false);
-            cmbRol.setDisable(true);
+            btnAgregar.setDisable(true);
+            btnEliminar.setDisable(true);
             txtClaveAcceso.setDisable(true);
             txtContrasena.setDisable(true);
-        } else if ("gerente".equalsIgnoreCase(rol)) {
-            btnAgregar.setVisible(true);
-            btnEliminar.setVisible(true);
-            cmbRol.setDisable(false);
-            txtClaveAcceso.setDisable(false);
-            txtContrasena.setDisable(false);
+            cmbRol.setDisable(true);
         }
     }
 
     private void cargarUsuarios() {
-        listaUsuarios.clear();
-        try (Connection conn = Conexion.getConnection()) {
-            String sql = "SELECT id_usuario, clave_acceso, contrasena, rol FROM usuario";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                listaUsuarios.add(new Usuario(
-                        rs.getInt("id_usuario"),
-                        rs.getString("clave_acceso"),
-                        rs.getString("contrasena"),
-                        rs.getString("rol")
-                ));
-            }
+        try {
+            List<Usuario> usuarios = usuarioDAO.listarUsuarios();
+            listaUsuarios.setAll(usuarios);
         } catch (Exception e) {
-            e.printStackTrace();
             mostrarAlerta("Error", "No se pudieron cargar los usuarios.");
         }
     }
 
     private void agregarUsuario() {
-        String claveAcceso = txtClaveAcceso.getText();
-        String contrasena = txtContrasena.getText();
+
+        String claveAcceso = txtClaveAcceso.getText().trim();
+        String contrasena = txtContrasena.getText().trim();
         String rolNuevo = cmbRol.getValue();
 
         if (claveAcceso.isEmpty() || contrasena.isEmpty() || rolNuevo == null) {
@@ -113,45 +100,36 @@ public class UsuariosController {
             return;
         }
 
-        String hashedPass = HashUtil.md5(contrasena);
+        String hash = HashUtil.md5(contrasena);
+        Usuario nuevo = new Usuario(0, claveAcceso, hash, rolNuevo);
 
-        try (Connection conn = Conexion.getConnection()) {
-            String sql = "INSERT INTO usuario (clave_acceso, contrasena, rol) VALUES (?, ?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, claveAcceso);
-            stmt.setString(2, hashedPass);
-            stmt.setString(3, rolNuevo);
-            stmt.executeUpdate();
-
+        try {
+            usuarioDAO.insertarUsuario(nuevo);
             mostrarAlerta("Éxito", "Usuario agregado correctamente.");
             cargarUsuarios();
 
             txtClaveAcceso.clear();
             txtContrasena.clear();
-            cmbRol.setValue(null);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            mostrarAlerta("Error", "No se pudo agregar el usuario.");
+            cmbRol.getSelectionModel().clearSelection();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo agregar el usuario: " + e.getMessage());
         }
     }
 
     private void eliminarUsuario() {
         Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
+
         if (seleccionado == null) {
             mostrarAlerta("Error", "Selecciona un usuario para eliminar.");
             return;
         }
 
-        try (Connection conn = Conexion.getConnection()) {
-            String sql = "DELETE FROM usuario WHERE id_usuario = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, seleccionado.getId());
-            stmt.executeUpdate();
-
+        try {
+            usuarioDAO.eliminarUsuario(seleccionado.getId());
             mostrarAlerta("Éxito", "Usuario eliminado correctamente.");
             cargarUsuarios();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
             mostrarAlerta("Error", "No se pudo eliminar el usuario.");
         }
     }
@@ -167,7 +145,7 @@ public class UsuariosController {
             stage.centerOnScreen();
             stage.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir el menú principal.");
         }
     }
 

@@ -1,192 +1,170 @@
 package com.baisinventory.controller;
 
-import com.baisinventory.dao.Conexion;
+import com.baisinventory.dao.ReporteDAO;
 import com.baisinventory.model.Reporte;
 import com.baisinventory.util.AppSession;
-import javafx.collections.FXCollections;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ResourceBundle;
 
-public class ReportesController {
+public class ReportesController implements Initializable {
+
+    private ReporteDAO dao;
+
+    @FXML private ComboBox<String> comboTipo;
+    @FXML private TextArea txtContenido;
+    @FXML private Button btnCrear;
+    @FXML private Button btnVolver;
     @FXML private TableView<Reporte> tablaReportes;
     @FXML private TableColumn<Reporte, String> colTipo;
     @FXML private TableColumn<Reporte, String> colContenido;
     @FXML private TableColumn<Reporte, String> colFecha;
-    @FXML private TableColumn<Reporte, Integer> colUsuario;
+    @FXML private TableColumn<Reporte, String> colUsuario;
     @FXML private TableColumn<Reporte, Void> colAccion;
-    @FXML private Button btnVolver;
-    @FXML private ComboBox<String> comboTipo;
-    @FXML private TextArea txtContenido;
-    @FXML private Button btnCrear;
 
-    private Connection conn;
-    private ObservableList<Reporte> listaReportes;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        dao = new ReporteDAO();
 
-    public void initialize() {
-        try {
-            conn = Conexion.getConnection();
-            comboTipo.getItems().addAll("Repuestos", "Ensambles", "Exportaciones", "Otro");
+        // Limpiar vistos al iniciar
+        dao.limpiarVistos();
 
-            cargarReportes();
-            tablaReportes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        // Tipos de reporte
+        comboTipo.getItems().addAll("Repuestos", "Ensambles", "Exportaciones", "Mantenimiento");
 
-            btnCrear.setOnAction(e -> crearReporte());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            mostrarAlerta("Error al conectar con la base de datos: " + e.getMessage());
-        }
+        // Configurar columnas
+        colTipo.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTipo()));
+        colContenido.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getContenido()));
+        colFecha.setCellValueFactory(cell -> new SimpleStringProperty(
+                cell.getValue().getFecha() != null ? cell.getValue().getFecha().toString() : ""));
+        colUsuario.setCellValueFactory(cell -> new SimpleStringProperty(
+                String.valueOf(cell.getValue().getIdUsuario())));
+
+        // Agregar botones en la tabla
+        agregarBotonesAccion();
+
+        // Botón crear
+        btnCrear.setOnAction(e -> crearReporte());
+
+        // Botón volver
+        btnVolver.setOnAction(e -> volverAlMenu());
+
+        // Cargar tabla
+        cargarTabla();
     }
 
-    private ObservableList<Reporte> obtenerReportes() throws SQLException {
-        ObservableList<Reporte> reportes = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM reporte";
-        try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Reporte r = new Reporte();
-                r.setIdReporte(rs.getInt("id_reporte"));
-                r.setTipo(rs.getString("tipo"));
-                r.setContenido(rs.getString("contenido"));
-                r.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
-                r.setIdUsuario(rs.getInt("id_usuario"));
-                r.setVisto(rs.getBoolean("visto"));
-                reportes.add(r);
-            }
-        }
-        return reportes;
-    }
+    private void cargarTabla() {
+        List<Reporte> lista = dao.listarReportes();
+        tablaReportes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        ObservableList<Reporte> items = tablaReportes.getItems();
+        items.clear();
+        items.addAll(lista);
 
-    private void cargarReportes() {
-        try {
-            listaReportes = obtenerReportes();
-            tablaReportes.setItems(listaReportes);
-
-            colTipo.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getTipo()));
-            colContenido.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getContenido()));
-            colFecha.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getFecha().toString()));
-            colUsuario.setCellValueFactory(d -> new javafx.beans.property.SimpleIntegerProperty(d.getValue().getIdUsuario()).asObject());
-
-            // Botón de acción
-            colAccion.setCellFactory(tc -> new TableCell<>() {
-                final Button btn = new Button("Marcar visto");
-                @Override
-                protected void updateItem(Void item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                    } else {
-                        btn.setOnAction(e -> {
-                            Reporte r = getTableView().getItems().get(getIndex());
-                            try {
-                                marcarVisto(r.getIdReporte());
-                                cargarReportes();
-                            } catch (SQLException ex) {
-                                ex.printStackTrace();
-                                mostrarAlerta("Error al marcar como visto: " + ex.getMessage());
-                            }
-                        });
-                        setGraphic(btn);
-                    }
+        tablaReportes.setRowFactory(tv -> new TableRow<Reporte>() {
+            @Override
+            protected void updateItem(Reporte item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item != null && !empty) {
+                    setStyle(item.isVisto() ? "-fx-opacity: 0.6;" : "");
+                } else {
+                    setStyle("");
                 }
-            });
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            mostrarAlerta("Error al cargar los reportes: " + e.getMessage());
-        }
-    }
-
-    private void guardarReporte(Reporte r) throws SQLException {
-        String sql = "INSERT INTO reporte (tipo, contenido, fecha, id_usuario, visto) VALUES (?, ?, NOW(), ?, false)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, r.getTipo());
-            ps.setString(2, r.getContenido());
-            ps.setInt(3, r.getIdUsuario());
-            ps.executeUpdate();
-        }
+            }
+        });
     }
 
     private void crearReporte() {
-        if (comboTipo.getValue() == null || txtContenido.getText().isEmpty()) {
-            mostrarAlerta("Debe seleccionar un tipo y escribir un contenido.");
-            return;
-        }
+        if (comboTipo.getValue() == null || comboTipo.getValue().trim().isEmpty()) return;
+        if (txtContenido.getText() == null || txtContenido.getText().trim().isEmpty()) return;
+
+        int idUsuario = AppSession.getIdUsuario();
+        if (idUsuario == 0) return;
 
         Reporte r = new Reporte();
+        r.setIdUsuario(idUsuario);
         r.setTipo(comboTipo.getValue());
-        r.setContenido(txtContenido.getText());
-        r.setIdUsuario(AppSession.getIdUsuario());
+        r.setContenido(txtContenido.getText().trim());
+        r.setFecha(LocalDateTime.now());
+        r.setVisto(false);
 
-        try {
-            guardarReporte(r);
-            cargarReportes();
+        if (dao.crearReporte(r)) {
             txtContenido.clear();
-            comboTipo.getSelectionModel().clearSelection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            mostrarAlerta("Error al crear el reporte: " + e.getMessage());
+            comboTipo.setValue(null);
+            cargarTabla();
         }
     }
 
-    private void marcarVisto(int idReporte) throws SQLException {
-        String sql = "UPDATE reporte SET visto = true WHERE id_reporte = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, idReporte);
-            ps.executeUpdate();
-        }
+    private void agregarBotonesAccion() {
+        Callback<TableColumn<Reporte, Void>, TableCell<Reporte, Void>> cellFactory = param -> new TableCell<>() {
+            private final Button btnVisto = new Button("Marcar visto");
+            private final Button btnEliminar = new Button("Eliminar");
 
-        // Programar eliminación después de 5 segundos
-        new Thread(() -> {
-            try {
-                Thread.sleep(5000); // esperar 5 segundos
-                eliminarReporte(idReporte);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            {
+                btnVisto.setOnAction(e -> {
+                    Reporte r = getTableView().getItems().get(getIndex());
+                    if (r != null && !r.isVisto()) {
+                        dao.marcarComoVisto(r.getIdReporte());
+                        cargarTabla();
+                    }
+                });
+
+                btnEliminar.setOnAction(e -> {
+                    Reporte r = getTableView().getItems().get(getIndex());
+                    if (r != null) {
+                        dao.eliminarReporte(r.getIdReporte());
+                        cargarTabla();
+                    }
+                });
             }
-        }).start();
+
+            @Override
+            public void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Reporte r = getTableView().getItems().get(getIndex());
+                    btnVisto.setDisable(r.isVisto());
+                    btnVisto.setText(r.isVisto() ? "Visto" : "Marcar visto");
+                    HBox box = new HBox(6, btnVisto, btnEliminar);
+                    setGraphic(box);
+                }
+            }
+        };
+
+        colAccion.setCellFactory(cellFactory);
     }
 
-    private void mostrarAlerta(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
+    private void volverAlMenu() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/baisinventory/ui/MainView.fxml"));
+            Stage stage = (Stage) btnVolver.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.centerOnScreen();
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrar("No se pudo volver al menú.");
+        }
+    }
+
+    private void mostrar(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
-    }
-    private void eliminarReporte(int idReporte) throws SQLException {
-        String sql = "DELETE FROM reporte WHERE id_reporte = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, idReporte);
-            ps.executeUpdate();
-        }
-    }
-
-    @FXML
-    private void volverAlMenu() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/baisinventory/ui/MainView.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) btnVolver.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Bais Inventory - Menú Principal");
-            stage.centerOnScreen();
-            stage.show();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            mostrarAlerta("No se pudo cargar la vista principal: " + ex.getMessage());
-        }
     }
 }

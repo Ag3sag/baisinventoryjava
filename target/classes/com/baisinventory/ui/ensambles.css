@@ -1,50 +1,91 @@
 /* Fondo general */
 .root {
+    -fx-background-color: #f1f5f9; /* gris clarito */
+    -fx-font-family: Arial;
     -fx-alignment: center;
-    -fx-background-color: #f1f5f9;
-    -fx-font-family: "Inter", Arial, sans-serif;
 }
 
-/* Títulos */
-.label {
-    -fx-font-size: 16px;
+/* Título */
+.titulo {
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1e293b;
+    -fx-text-fill: #111827;
 }
 
-/* Botones */
+/* Caja del formulario */
+.formulario {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);
+}
+
+/* Inputs: TextField, PasswordField y ComboBox */
+.text-field, .password-field, .combo-box, .text-area {
+    -fx-padding: 8;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-color: #ccc;
+    -fx-background-color: white;
+}
+
+/* Botones generales */
 .button {
     -fx-background-color: #3b82f6;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-padding: 8 15;
     -fx-background-radius: 8;
     -fx-cursor: hand;
-    -fx-padding: 8 16;
+    -fx-font-weight: bold;
 }
 
 .button:hover {
-    -fx-background-color: #2563eb;
+    -fx-background-color: #1d4ed8;
 }
 
-/* Campos de texto */
-.text-field, .password-field, .combo-box {
-    -fx-background-color: white;
-    -fx-border-color: #cbd5e1;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-    -fx-padding: 6 10;
+/* Botón volver específico */
+.volver {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
 }
 
-/* Tabla */
+/* TableView general */
 .table-view {
     -fx-background-color: white;
-    -fx-border-color: #cbd5e1;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1px;
+    -fx-table-cell-border-color: #e5e7eb;
 }
 
+/* Cabecera de la tabla */
 .table-view .column-header {
     -fx-background-color: #3b82f6;
     -fx-text-fill: white;
     -fx-font-weight: bold;
+}
+
+/* Filas alternadas y selección */
+.table-row-cell:odd {
+    -fx-background-color: #f9fafb;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #bfdbfe;
+}
+
+/* HBox de botones dentro de la tabla */
+.hbox.button-cell {
+    -fx-spacing: 6;
+    -fx-alignment: center;
+}
+
+/* Botones dentro de la tabla */
+.table-view .button {
+    -fx-font-size: 11px;
+    -fx-padding: 4 8;
+    -fx-background-radius: 5;
 }

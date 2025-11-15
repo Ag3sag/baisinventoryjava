@@ -10,24 +10,59 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d561db09-8d98-4508-be41-c7a0dd6098c1" name="Changes" comment="Primer commit del proyecto">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/baisinventory_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/RepuestoDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/util/ViewUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com.baisinventory.model/UsuarioTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/bais_inventory_jar/bais-inventory.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/bais_inventory_jar/bais-inventory.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT-shaded.jar" beforeDir="false" afterPath="$PROJECT_DIR$/artifacts/baisinventory_jar/baisinventory.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/EnsamblesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/EnsamblesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/ExportacionesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/ExportacionesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/ReportesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/ReportesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/RepuestosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/RepuestosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/UsuariosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/UsuariosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/Conexion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/Conexion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/EnsambleDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/EnsambleDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/ExportacionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/ExportacionDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/ReporteDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/ReporteDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/UsuarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/dao/UsuarioDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/model/Exportacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/model/Exportacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/model/Repuesto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/model/Repuesto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/util/AppSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/util/AppSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/Ensambles.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/Ensambles.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/Exportaciones.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/Exportaciones.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/Reportes.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/Reportes.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/ensambles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/ensambles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/exportaciones.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/baisinventory/ui/exportaciones.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/EnsamblesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/EnsamblesController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/MainController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/LoginController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ReportesController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ReportesController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ReportesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ReportesController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/RepuestosController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/RepuestosController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/RepuestosController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/RepuestosController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/UsuariosController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/UsuariosController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/Conexion.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/Conexion.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/EnsambleDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/EnsambleDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/ExportacionDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/ExportacionDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/ReporteDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/ReporteDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/UsuarioDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/dao/UsuarioDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/model/Exportacion.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/model/Exportacion.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/model/Repuesto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/model/Repuesto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/Ensambles.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/Ensambles.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/Exportaciones.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/Exportaciones.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/Reportes.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/Reportes.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/ensambles.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/ensambles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/exportaciones.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/ui/exportaciones.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/util/AppSession.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/util/AppSession.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/original-bais-inventory-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-bais-inventory-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-bais-inventory-1.0-SNAPSHOT.jar" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +99,9 @@
     &quot;accountId&quot;: &quot;56efed13-ed38-48c5-866a-dc29a4640910&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -80,6 +118,7 @@
     &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
     &quot;Application.TestConexion.executor&quot;: &quot;Run&quot;,
     &quot;JAR Application.bais-inventory-1.0-SNAPSHOT.jar.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UsuarioTest.executor&quot;: &quot;Run&quot;,
     &quot;Maven.bais-inventory [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -90,7 +129,7 @@
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Documents/Tareas Sena/trabajos/Barnes inventory system/baisinventory&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;D:/Documents/Tareas Sena/trabajos/Barnes inventory system/baisinventory/src/main/java/org/baisinventory/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.35747126&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;build.tools&quot;
@@ -124,6 +163,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UsuarioTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bais-inventory" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.baisinventory.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.baisinventory.model" />
+      <option name="MAIN_CLASS_NAME" value="com.baisinventory.model.UsuarioTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="bais-inventory-1.0-SNAPSHOT.jar" type="JarApplication" temporary="true">
       <option name="JAR_PATH" value="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT.jar" />
       <method v="2" />
@@ -132,10 +186,12 @@
       <item itemvalue="Application.MainApp" />
       <item itemvalue="Application.TestConexion" />
       <item itemvalue="JAR Application.bais-inventory-1.0-SNAPSHOT.jar" />
+      <item itemvalue="JUnit.UsuarioTest" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.MainApp" />
+        <item itemvalue="JUnit.UsuarioTest" />
         <item itemvalue="Application.TestConexion" />
         <item itemvalue="JAR Application.bais-inventory-1.0-SNAPSHOT.jar" />
       </list>

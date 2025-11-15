@@ -2,9 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.baisinventory.controller.EnsamblesController"
             prefWidth="1660" prefHeight="920"
@@ -18,6 +18,7 @@
             </image>
         </ImageView>
     </HBox>
+
     <top>
         <StackPane alignment="CENTER">
             <Label text="🛠 Gestión de Ensambles"
@@ -26,7 +27,6 @@
     </top>
 
     <center>
-        <!-- Contenedor principal centrado -->
         <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;" maxWidth="650">
 
             <!-- Formulario visible solo para gerentes -->
@@ -51,12 +51,11 @@
                 </VBox>
 
                 <Button fx:id="btnCrear" text="➕ Agregar Ensamble"
-                        styleClass="primary-button"
-                        onAction="#crearEnsamble"/>
+                        styleClass="primary-button"/>
             </VBox>
 
             <!-- Tabla de ensambles -->
-            <TableView  fx:id="tablaEnsambles" prefHeight="250" maxWidth="600">
+            <TableView fx:id="tablaEnsambles" prefHeight="250" maxWidth="600">
                 <columns>
                     <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
                     <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200"/>

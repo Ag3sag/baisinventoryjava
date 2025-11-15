@@ -17,4 +17,13 @@ public class Repuesto {
     public String getNombre() { return nombre; }
     public int getCantidad() { return cantidad; }
     public String getUbicacion() { return ubicacion; }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
 }

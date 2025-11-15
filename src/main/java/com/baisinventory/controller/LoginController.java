@@ -31,41 +31,52 @@ public class LoginController {
         String hashedPassword = HashUtil.md5(password);
 
         try (Connection conn = Conexion.getConnection()) {
+
             String sql = "SELECT id_usuario, clave_acceso, contrasena, rol FROM usuario WHERE clave_acceso = ? AND contrasena = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
             stmt.setString(2, hashedPassword);
 
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
+
                 int idUsuario = rs.getInt("id_usuario");
                 String claveAcceso = rs.getString("clave_acceso");
                 String contrasena = rs.getString("contrasena");
                 String rol = rs.getString("rol");
 
+                // Crear objeto Usuario
                 Usuario usuario = new Usuario(idUsuario, claveAcceso, contrasena, rol);
 
-                // Guardar sesión
+                // Guardar sesión mínima
                 AppSession.setSession(usuario.getId(), usuario.getRol());
+
+                // Guardar usuario completo para usar en reportes, etc.
+                AppSession.setUsuario(usuario);
 
                 // Cargar MainView
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/baisinventory/ui/MainView.fxml"));
                 Parent root = loader.load();
+
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.setTitle("Bais Inventory - Menú Principal");
                 stage.centerOnScreen();
                 stage.show();
+
             } else {
-                // Mostrar popup de error
+                // Error en credenciales
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error de inicio de sesión");
                 alert.setHeaderText(null);
                 alert.setContentText("Usuario o contraseña incorrectos");
                 alert.showAndWait();
             }
+
         } catch (Exception e) {
             e.printStackTrace();
+
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error de conexión");
             alert.setHeaderText("No se pudo conectar con la base de datos");

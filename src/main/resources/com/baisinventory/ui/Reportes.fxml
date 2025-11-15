@@ -2,9 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.baisinventory.controller.ReportesController"
             prefWidth="800" prefHeight="600"
@@ -31,8 +31,7 @@
         </HBox>
 
         <!-- Tabla de reportes -->
-        <TableView fx:id="tablaReportes" prefHeight="400" VBox.vgrow="ALWAYS" styleClass="table-view" >
-
+        <TableView fx:id="tablaReportes" prefHeight="400" VBox.vgrow="ALWAYS" styleClass="table-view">
             <columns>
                 <TableColumn fx:id="colTipo" text="Tipo" />
                 <TableColumn fx:id="colContenido" text="Contenido" />
@@ -44,7 +43,7 @@
 
         <!-- Botón volver -->
         <HBox spacing="15" alignment="CENTER" styleClass="volver">
-            <Button fx:id="btnVolver" text="Volver al menú" onAction="#volverAlMenu" styleClass="button"/>
+            <Button fx:id="btnVolver" text="Volver al menú" styleClass="button"/>
         </HBox>
 
     </VBox>
