@@ -11,12 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d561db09-8d98-4508-be41-c7a0dd6098c1" name="Changes" comment="Primer commit del proyecto">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/EnsamblesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/EnsamblesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/ExportacionesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/baisinventory/controller/ExportacionesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/bais-inventory-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/EnsamblesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/EnsamblesController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/baisinventory/controller/ExportacionesController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/original-bais-inventory-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-bais-inventory-1.0-SNAPSHOT.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
