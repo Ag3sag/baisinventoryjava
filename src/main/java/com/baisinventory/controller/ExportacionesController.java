@@ -23,7 +23,7 @@ public class ExportacionesController {
     @FXML private TextField txtDestino;
     @FXML private Button btnCrear;
     @FXML private Button btnVolver;
-    @FXML private Button btnEliminar;   // NUEVO
+    @FXML private Button btnEliminar;
     @FXML private TableView<Exportacion> tablaExportaciones;
     @FXML private TableColumn<Exportacion, Integer> colId;
     @FXML private TableColumn<Exportacion, String> colUbicacion;
@@ -36,6 +36,7 @@ public class ExportacionesController {
     public void initialize() {
 
         idUsuario = AppSession.getIdUsuario();
+        String rol = AppSession.getRol(); // obtenemos el rol del usuario
 
         listaExportaciones = FXCollections.observableArrayList();
         tablaExportaciones.setItems(listaExportaciones);
@@ -45,11 +46,22 @@ public class ExportacionesController {
         colDestino.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getDestino()));
         colResponsable.setCellValueFactory(c -> new javafx.beans.property.SimpleIntegerProperty(c.getValue().getIdUsuario()).asObject());
 
-        btnCrear.setOnAction(e -> crearExportacion());
-        btnVolver.setOnAction(e -> volverAlMenu());
-        btnEliminar.setOnAction(e -> eliminarExportacion()); // NUEVO
-
         cargarExportaciones();
+
+        // -------------------------------
+        //   Control de permisos por rol
+        // -------------------------------
+        if ("trabajador".equalsIgnoreCase(rol)) {
+            // Solo puede mirar, deshabilitamos botones de acción
+            btnCrear.setDisable(true);
+            btnEliminar.setDisable(true);
+        } else {
+            // Admin o gerente pueden crear/eliminar
+            btnCrear.setOnAction(e -> crearExportacion());
+            btnEliminar.setOnAction(e -> eliminarExportacion());
+        }
+
+        btnVolver.setOnAction(e -> volverAlMenu());
     }
 
     private void cargarExportaciones() {
@@ -79,9 +91,6 @@ public class ExportacionesController {
         }
     }
 
-    // ----------------------
-    //   ELIMINAR EXPORTACIÓN
-    // ----------------------
     private void eliminarExportacion() {
         Exportacion seleccion = tablaExportaciones.getSelectionModel().getSelectedItem();
 

@@ -58,11 +58,34 @@ public class EnsamblesController {
         idUsuario = AppSession.getIdUsuario();
         rol = AppSession.getRol();
 
-        boolean isGerente = rol.equalsIgnoreCase("gerente");
-        formularioGerente.setVisible(isGerente);
-        btnEliminar.setVisible(isGerente);
+        boolean isTrabajador = rol.equalsIgnoreCase("trabajador");
 
-        // Configurar columnas de la tabla
+        // =======================================
+        // 🔒 RESTRICCIONES PARA TRABAJADOR
+        // =======================================
+        if (isTrabajador) {
+            // No puede crear ni eliminar
+            btnCrear.setDisable(true);
+            btnEliminar.setDisable(true);
+
+            // No puede tocar inputs
+            txtNombre.setDisable(true);
+            cmbUbicacion.setDisable(true);
+            listaRepuestos.setDisable(true);
+
+            // También que no pueda seleccionar varios repuestos
+            listaRepuestos.getSelectionModel().clearSelection();
+        }
+
+        // Si NO es trabajador (admin/gerente), habilitamos todo
+        if (!isTrabajador) {
+            btnCrear.setOnAction(e -> crearEnsamble());
+            btnEliminar.setOnAction(e -> eliminarEnsamble());
+        }
+
+        btnVolver.setOnAction(e -> volverAlMenu());
+
+        // Configurar columnas
         colId.setCellValueFactory(c -> new javafx.beans.property.SimpleIntegerProperty(c.getValue().getId()).asObject());
         colNombre.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getNombre()));
         colUbicacion.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getUbicacion()));
@@ -73,11 +96,6 @@ public class EnsamblesController {
 
         cmbUbicacion.getItems().addAll("A", "B", "C", "D");
         listaRepuestos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        // Eventos
-        btnCrear.setOnAction(e -> crearEnsamble());
-        btnEliminar.setOnAction(e -> eliminarEnsamble());
-        btnVolver.setOnAction(e -> volverAlMenu());
 
         cargarRepuestos();
         cargarEnsambles();
