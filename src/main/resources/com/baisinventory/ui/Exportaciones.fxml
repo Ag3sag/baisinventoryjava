@@ -16,7 +16,7 @@
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
         <!-- Logo centrado -->
-        <HBox alignment="CENTER">
+        <HBox alignment="TOP_LEFT" style="-fx-padding: 10;">
             <ImageView fx:id="logoGeneral" layoutX="10" layoutY="10" fitWidth="80" fitHeight="80" preserveRatio="true">
                 <image>
                     <Image url="@../images/Logo.png"/>
