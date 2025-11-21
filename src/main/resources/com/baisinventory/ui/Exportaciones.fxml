@@ -17,7 +17,7 @@
 
         <!-- Logo centrado -->
         <HBox alignment="CENTER">
-            <ImageView fx:id="logoGeneral" fitWidth="80" fitHeight="80" preserveRatio="true">
+            <ImageView fx:id="logoGeneral" layoutX="10" layoutY="10" fitWidth="80" fitHeight="80" preserveRatio="true">
                 <image>
                     <Image url="@../images/Logo.png"/>
                 </image>
@@ -36,17 +36,30 @@
 
             <Label text="➕ Nueva Exportación" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 
+            <!-- Ubicación como COMBOBOX -->
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <Label text="Ubicación:" minWidth="100"/>
-                <TextField fx:id="txtUbicacion" promptText="Ubicación de origen" prefWidth="200"/>
+                <ComboBox fx:id="comboUbicacion" prefWidth="200"/>
             </HBox>
 
+            <!-- Destino como TEXTFIELD -->
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <Label text="Destino:" minWidth="100"/>
-                <TextField fx:id="txtDestino" promptText="Destino" prefWidth="200"/>
+                <TextField fx:id="txtDestino" promptText="Destino final" prefWidth="200"/>
             </HBox>
 
+            <!-- Selector de ensambles -->
+            <Label text="Seleccione los ensambles para esta exportación:"
+                   style="-fx-font-size: 14; -fx-font-weight: bold;" />
+
+            <ListView fx:id="listaEnsambles"
+                      prefHeight="150"
+                      style="-fx-border-color: #ccc; -fx-background-color: white;" />
+
+
+            <!-- Botón para crear exportación -->
             <Button fx:id="btnCrear" text="➕ Agregar Exportación" styleClass="primary-button"/>
+
         </VBox>
 
         <!-- Tabla de exportaciones -->

@@ -72,6 +72,12 @@ public class RepuestosController {
         comboUbicacion.getItems().addAll("Todos", "A", "B", "C", "D");
         comboUbicacion.setOnAction(e -> filtrarPorUbicacion());
 
+
+        comboUbicacion.getSelectionModel().select("Todos");
+
+
+        filtrarPorUbicacion();
+
         btnAgregar.setOnAction(e -> agregarRepuesto());
         btnEliminar.setOnAction(e -> eliminarRepuesto());
         btnVolver.setOnAction(e -> volverAlMenu());

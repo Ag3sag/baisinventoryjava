@@ -1,5 +1,6 @@
 package com.baisinventory.controller;
 
+import com.baisinventory.dao.Conexion;
 import com.baisinventory.dao.ReporteDAO;
 import com.baisinventory.model.Reporte;
 import com.baisinventory.util.AppSession;
@@ -37,7 +38,7 @@ public class ReportesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        dao = new ReporteDAO();
+        dao = new ReporteDAO(Conexion.getConnection());
 
         // Limpiar vistos al iniciar
         dao.limpiarVistos();

@@ -49,13 +49,12 @@ public class RepuestoDAO {
 
     // Reducir la cantidad de un repuesto en 1
     public void reducirCantidad(int idRepuesto) throws SQLException {
-        String sql = "UPDATE repuesto SET cantidad = cantidad - 1 WHERE id_repuesto = ?";
+        String sql = "UPDATE repuesto SET cantidad = cantidad - 1 WHERE id_repuesto = ? AND cantidad > 0";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idRepuesto);
             ps.executeUpdate();
         }
     }
-
     // Crear o insertar un nuevo repuesto
     public boolean insertarRepuesto(Repuesto r) throws SQLException {
         String sql = "INSERT INTO repuesto (nombre, cantidad, ubicacion) VALUES (?, ?, ?)";

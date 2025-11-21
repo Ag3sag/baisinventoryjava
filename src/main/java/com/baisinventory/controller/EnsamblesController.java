@@ -4,6 +4,7 @@ import com.baisinventory.dao.Conexion;
 import com.baisinventory.dao.EnsambleDAO;
 import com.baisinventory.dao.RepuestoDAO;
 import com.baisinventory.model.Ensamble;
+import com.baisinventory.model.Repuesto;
 import com.baisinventory.util.AppSession;
 
 import javafx.collections.FXCollections;
@@ -30,7 +31,8 @@ public class EnsamblesController {
     @FXML private VBox formularioGerente;
     @FXML private TextField txtNombre;
     @FXML private ComboBox<String> cmbUbicacion;
-    @FXML private ListView<String> listaRepuestos;
+
+    @FXML private ListView<Repuesto> listaRepuestos;              // <--- CAMBIADO A OBJETOS
     @FXML private ListView<String> listaRepuestosEnsamble;
 
     @FXML private Button btnCrear;
@@ -60,25 +62,13 @@ public class EnsamblesController {
 
         boolean isTrabajador = rol.equalsIgnoreCase("trabajador");
 
-        // =======================================
-        // 🔒 RESTRICCIONES PARA TRABAJADOR
-        // =======================================
         if (isTrabajador) {
-            // No puede crear ni eliminar
             btnCrear.setDisable(true);
             btnEliminar.setDisable(true);
-
-            // No puede tocar inputs
             txtNombre.setDisable(true);
             cmbUbicacion.setDisable(true);
             listaRepuestos.setDisable(true);
-
-            // También que no pueda seleccionar varios repuestos
-            listaRepuestos.getSelectionModel().clearSelection();
-        }
-
-        // Si NO es trabajador (admin/gerente), habilitamos todo
-        if (!isTrabajador) {
+        } else {
             btnCrear.setOnAction(e -> crearEnsamble());
             btnEliminar.setOnAction(e -> eliminarEnsamble());
         }
@@ -95,6 +85,7 @@ public class EnsamblesController {
         tablaEnsambles.setItems(listaEnsambles);
 
         cmbUbicacion.getItems().addAll("A", "B", "C", "D");
+
         listaRepuestos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         cargarRepuestos();
@@ -117,8 +108,31 @@ public class EnsamblesController {
 
     private void cargarRepuestos() {
         try {
-            listaRepuestos.setItems(FXCollections.observableArrayList(repuestoDAO.obtenerTodosFormateados()));
+            var lista = repuestoDAO.listarRepuestos();
+            ObservableList<Repuesto> items = FXCollections.observableArrayList(lista);
+
+            listaRepuestos.setItems(items);
+
+            // FORMATEAR VISUAL, PERO SE MANTIENE EL OBJETO REAL
+            listaRepuestos.setCellFactory(param -> new ListCell<Repuesto>() {
+                @Override
+                protected void updateItem(Repuesto r, boolean empty) {
+                    super.updateItem(r, empty);
+                    if (empty || r == null) {
+                        setText(null);
+                    } else {
+                        setText(String.format(
+                                "ID: %-4d | %s | Cantidad: %d",
+                                r.getId(),
+                                r.getNombre(),
+                                r.getCantidad()
+                        ));
+                    }
+                }
+            });
+
         } catch (Exception e) {
+            e.printStackTrace();
             mostrar("Error al cargar repuestos.");
         }
     }
@@ -126,7 +140,9 @@ public class EnsamblesController {
     private void cargarRepuestosDeEnsamble(int idEnsamble) {
         try {
             listaRepuestosEnsamble.setItems(
-                    FXCollections.observableArrayList(ensambleDAO.obtenerRepuestosDeEnsamble(idEnsamble))
+                    FXCollections.observableArrayList(
+                            ensambleDAO.obtenerRepuestosDeEnsamble(idEnsamble)
+                    )
             );
         } catch (Exception e) {
             mostrar("No se pudieron cargar los repuestos del ensamble.");
@@ -147,20 +163,22 @@ public class EnsamblesController {
             Ensamble e = new Ensamble(0, nombre, ubicacion, idUsuario);
             int idEnsamble = ensambleDAO.crearEnsamble(e);
 
-            for (String item : seleccionados) {
-                int idRepuesto = Integer.parseInt(item.split(" - ")[0]);
-                ensambleDAO.agregarRepuestoAEnsamble(idEnsamble, idRepuesto);
-                repuestoDAO.reducirCantidad(idRepuesto);
+            for (Repuesto rep : seleccionados) {
+                ensambleDAO.agregarRepuestoAEnsamble(idEnsamble, rep.getId());
+                repuestoDAO.reducirCantidad(rep.getId());
             }
 
             mostrar("Ensamble creado correctamente.");
+
             cargarEnsambles();
             cargarRepuestos();
 
             txtNombre.clear();
             cmbUbicacion.setValue(null);
             listaRepuestos.getSelectionModel().clearSelection();
+
         } catch (Exception ex) {
+            ex.printStackTrace();
             mostrar("Error al crear el ensamble.");
         }
     }

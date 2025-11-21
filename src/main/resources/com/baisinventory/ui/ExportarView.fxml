@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.baisinventory.controller.ExportarController"
+      spacing="15"
+      style="-fx-padding: 20; -fx-background-color: #ffffff; -fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-radius: 10;"
+      alignment="CENTER">
+
+    <Label text="📤 Exportar Información" style="-fx-font-size: 20; -fx-font-weight: bold;" />
+
+    <Label text="Seleccione qué desea exportar:" />
+    <ComboBox fx:id="comboTipo"
+              prefWidth="200"
+              promptText="Tipo de datos" />
+
+    <Label text="Seleccione formato:" />
+    <ComboBox fx:id="comboFormato"
+              prefWidth="200"
+              promptText="Formato" />
+
+    <HBox spacing="10">
+        <Button fx:id="btnExportar"
+                text="Exportar"
+                style="-fx-background-color: #4caf50; -fx-text-fill: white; -fx-padding: 8 20;" />
+        <Button fx:id="btnCancelar"
+                text="Cancelar"
+                style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-padding: 8 20;" />
+    </HBox>
+
+</VBox>

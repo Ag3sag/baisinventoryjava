@@ -21,15 +21,16 @@ public class MainController {
 
     @FXML
     private void initialize() {
-        // Configurar acciones de botones
+
+        // Configurar acciones de botones del menú principal
         btnUsuarios.setOnAction(e -> abrirVista("/com/baisinventory/ui/usuarios.fxml", "Administrar Usuarios"));
         btnRepuestos.setOnAction(e -> abrirVista("/com/baisinventory/ui/Repuestos.fxml", "Gestión de Repuestos"));
         btnEnsambles.setOnAction(e -> abrirVista("/com/baisinventory/ui/Ensambles.fxml", "Gestión de Ensambles"));
         btnExportaciones.setOnAction(e -> abrirVista("/com/baisinventory/ui/Exportaciones.fxml", "Exportaciones"));
         btnReportes.setOnAction(e -> abrirVista("/com/baisinventory/ui/Reportes.fxml", "Reportes"));
+
         btnLogout.setOnAction(e -> cerrarSesion());
 
-        // Configurar visibilidad de botones según rol
         configurarOpcionesPorRol();
     }
 
@@ -37,9 +38,9 @@ public class MainController {
         String rol = AppSession.getRol();
         boolean esGerente = "gerente".equalsIgnoreCase(rol);
 
-        // Mostrar/ocultar botón de Usuarios solo para gerentes
+        // Botón de usuarios solo para gerentes
         btnUsuarios.setVisible(esGerente);
-        btnUsuarios.setManaged(esGerente); //
+        btnUsuarios.setManaged(esGerente);
     }
 
     private void abrirVista(String ruta, String titulo) {
@@ -47,13 +48,11 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
             Parent root = loader.load();
 
-            // Llamar a inicializarSesion() según la vista
-            if (ruta.endsWith("usuarios.fxml")) {
-                UsuariosController controller = loader.getController();
-                controller.inicializarSesion();
-            } else if (ruta.endsWith("Repuestos.fxml")) {
-                RepuestosController controller = loader.getController();
-                controller.inicializarSesion();
+            // Llamar inicializarSesion() según el controlador cargado
+            Object controller = loader.getController();
+
+            if (controller instanceof SesionController sesionController) {
+                sesionController.inicializarSesion();
             }
 
             Stage stage = (Stage) btnUsuarios.getScene().getWindow();
@@ -61,28 +60,42 @@ public class MainController {
             stage.setTitle("Bais Inventory - " + titulo);
             stage.centerOnScreen();
             stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void abrirPopupExportar() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/baisinventory/ui/ExportarView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Exportar datos");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void cerrarSesion() {
-        // Limpia la sesión
         AppSession.clear();
 
         try {
-            // Carga el FXML del login
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/baisinventory/ui/login.fxml"));
             Parent root = loader.load();
 
-            // Crear un nuevo Stage para el login
             Stage loginStage = new Stage();
             loginStage.setScene(new Scene(root));
             loginStage.setTitle("Login - Bais Inventory");
             loginStage.centerOnScreen();
             loginStage.show();
 
-            // Cierra la ventana principal actual
             Stage currentStage = (Stage) btnLogout.getScene().getWindow();
             currentStage.close();
 

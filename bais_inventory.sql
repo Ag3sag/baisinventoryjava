@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 23-09-2025 a las 00:26:05
+-- Tiempo de generación: 21-11-2025 a las 15:04:27
 -- Versión del servidor: 5.7.15-log
 -- Versión de PHP: 5.6.26
 
@@ -38,8 +38,9 @@ CREATE TABLE `ensamble` (
 --
 
 INSERT INTO `ensamble` (`id_ensamble`, `ubicacion`, `id_usuario_responsable`, `nombre`) VALUES
-(6, 'B', 8, 'A!'),
-(7, 'B', 8, 'A');
+(34, 'B', 29, 'Manigueta'),
+(35, 'B', 29, 'asasd'),
+(37, 'B', 29, 'asd');
 
 -- --------------------------------------------------------
 
@@ -59,7 +60,8 @@ CREATE TABLE `exportacion` (
 --
 
 INSERT INTO `exportacion` (`id_exportacion`, `ubicacion`, `destino`, `id_usuario_responsable`) VALUES
-(3, 'C', 'aad', 8);
+(15, 'ASD', 'Cali', 29),
+(16, 'asd', 'asdasd', 29);
 
 -- --------------------------------------------------------
 
@@ -77,22 +79,10 @@ CREATE TABLE `exportacion_ensamble` (
 --
 
 INSERT INTO `exportacion_ensamble` (`id_exportacion`, `id_ensamble`) VALUES
-(3, 6),
-(3, 7);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `historial`
---
-
-CREATE TABLE `historial` (
-  `id_historial` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
-  `tipo_evento` varchar(50) DEFAULT NULL,
-  `detalle` text,
-  `fecha` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+(15, 34),
+(16, 34),
+(16, 35),
+(16, 37);
 
 -- --------------------------------------------------------
 
@@ -109,6 +99,13 @@ CREATE TABLE `reporte` (
   `visto` tinyint(4) DEFAULT '0',
   `fecha_visto` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `reporte`
+--
+
+INSERT INTO `reporte` (`id_reporte`, `id_usuario`, `tipo`, `contenido`, `fecha`, `visto`, `fecha_visto`) VALUES
+(6, 29, 'Exportaciones', 'asdasdasdasd', '2025-11-19 03:13:05', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -128,10 +125,8 @@ CREATE TABLE `repuesto` (
 --
 
 INSERT INTO `repuesto` (`id_repuesto`, `ubicacion`, `cantidad`, `Nombre`) VALUES
-(23, 'A', 7, 'Manigueta'),
-(24, 'B', 7, 'Manija'),
-(25, 'C', 13, 'adsasd'),
-(26, 'A', 124, 'asdad');
+(37, 'C', 7, 'asd'),
+(39, 'B', 8, 'Manigueta');
 
 -- --------------------------------------------------------
 
@@ -143,16 +138,6 @@ CREATE TABLE `repuesto_ensamble` (
   `id_repuesto` int(11) NOT NULL,
   `id_ensamble` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `repuesto_ensamble`
---
-
-INSERT INTO `repuesto_ensamble` (`id_repuesto`, `id_ensamble`) VALUES
-(23, 6),
-(24, 6),
-(23, 7),
-(24, 7);
 
 -- --------------------------------------------------------
 
@@ -172,10 +157,10 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `clave_acceso`, `contrasena`, `rol`) VALUES
-(8, 'juanes', '4deea19c734abc7ca74c2e4f8d6c9a2c', 'gerente'),
-(11, 'root', 'aabb2100033f0352fe7458e412495148', 'gerente'),
-(14, 'trabajador', '6d74977a18a82a467ae57860c2c2147e', 'trabajador'),
-(15, '1', 'c4ca4238a0b923820dcc509a6f75849b', 'gerente');
+(18, 'usuario', '4c882dcb24bcb1bc225391a602feca7c', 'gerente'),
+(29, '1', 'c4ca4238a0b923820dcc509a6f75849b', 'gerente'),
+(30, '12', 'c20ad4d76fe97759aa27a0c99bff6710', 'trabajador'),
+(31, '13', 'c51ce410c124a10e0db5e4b97fc2af39', 'gerente');
 
 --
 -- Índices para tablas volcadas
@@ -200,14 +185,7 @@ ALTER TABLE `exportacion`
 --
 ALTER TABLE `exportacion_ensamble`
   ADD PRIMARY KEY (`id_exportacion`,`id_ensamble`),
-  ADD KEY `id_ensamble` (`id_ensamble`);
-
---
--- Indices de la tabla `historial`
---
-ALTER TABLE `historial`
-  ADD PRIMARY KEY (`id_historial`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD KEY `exportacion_ensamble_ibfk_2` (`id_ensamble`);
 
 --
 -- Indices de la tabla `reporte`
@@ -244,32 +222,27 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `ensamble`
 --
 ALTER TABLE `ensamble`
-  MODIFY `id_ensamble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_ensamble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 --
 -- AUTO_INCREMENT de la tabla `exportacion`
 --
 ALTER TABLE `exportacion`
-  MODIFY `id_exportacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT de la tabla `historial`
---
-ALTER TABLE `historial`
-  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_exportacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT de la tabla `reporte`
 --
 ALTER TABLE `reporte`
-  MODIFY `id_reporte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_reporte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `repuesto`
 --
 ALTER TABLE `repuesto`
-  MODIFY `id_repuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_repuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- Restricciones para tablas volcadas
 --
@@ -291,13 +264,7 @@ ALTER TABLE `exportacion`
 --
 ALTER TABLE `exportacion_ensamble`
   ADD CONSTRAINT `exportacion_ensamble_ibfk_1` FOREIGN KEY (`id_exportacion`) REFERENCES `exportacion` (`id_exportacion`),
-  ADD CONSTRAINT `exportacion_ensamble_ibfk_2` FOREIGN KEY (`id_ensamble`) REFERENCES `ensamble` (`id_ensamble`);
-
---
--- Filtros para la tabla `historial`
---
-ALTER TABLE `historial`
-  ADD CONSTRAINT `historial_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+  ADD CONSTRAINT `exportacion_ensamble_ibfk_2` FOREIGN KEY (`id_ensamble`) REFERENCES `ensamble` (`id_ensamble`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `reporte`
