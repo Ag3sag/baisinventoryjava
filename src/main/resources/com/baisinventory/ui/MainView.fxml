@@ -30,9 +30,9 @@
 
         <!-- Botón pequeño de exportar -->
         <Button fx:id="btnExportar"
-                text="⬇"
+                text="📥"
                 onAction="#abrirPopupExportar"
-                style="-fx-font-size: 16; -fx-background-radius: 25; -fx-padding: 5 12 5 12;" />
+                style="-fx-font-size: 18; -fx-background-radius: 25; -fx-padding: 6 14; -fx-background-color: #BF2808; -fx-border-color: #737373; -fx-border-radius: 25;" />
 
     </HBox>
 

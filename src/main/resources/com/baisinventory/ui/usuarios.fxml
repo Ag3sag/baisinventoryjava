@@ -33,7 +33,7 @@
             <!-- Formulario -->
             <VBox spacing="10" alignment="CENTER" maxWidth="400"
                   style="-fx-padding: 15; -fx-background-color: #f9f9f9; -fx-background-radius: 10;">
-                <TextField fx:id="txtClaveAcceso" promptText="Clave de acceso" maxWidth="250"/>
+                <TextField fx:id="txtClaveAcceso" promptText="Nombre Usuario" maxWidth="250"/>
                 <PasswordField fx:id="txtContrasena" promptText="Contraseña" maxWidth="250"/>
 
                 <!-- Botones en fila centrados -->
@@ -48,7 +48,7 @@
             <TableView fx:id="tablaUsuarios" prefHeight="250" maxWidth="500">
                 <columns>
                     <TableColumn fx:id="colId" text="ID" prefWidth="100"/>
-                    <TableColumn fx:id="colClave" text="Clave" prefWidth="200"/>
+                    <TableColumn fx:id="colClave" text="Nombre" prefWidth="200"/>
                     <TableColumn fx:id="colRol" text="Rol" prefWidth="200"/>
                 </columns>
             </TableView>

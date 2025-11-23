@@ -64,6 +64,24 @@ public class UsuarioDAO {
         }
     }
 
+    public boolean existeClave(String claveAcceso) {
+        String sql = "SELECT COUNT(*) FROM usuario WHERE clave_acceso = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, claveAcceso);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Si es mayor a 0, ya existe
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     // ----------------------------------------------
     // LOGIN: VALIDAR USUARIO
     // ----------------------------------------------

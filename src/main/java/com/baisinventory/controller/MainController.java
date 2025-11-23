@@ -48,11 +48,11 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
             Parent root = loader.load();
 
-            // Llamar inicializarSesion() según el controlador cargado
             Object controller = loader.getController();
 
-            if (controller instanceof SesionController sesionController) {
-                sesionController.inicializarSesion();
+
+            if (controller instanceof UsuariosController u) {
+                u.inicializarSesion();
             }
 
             Stage stage = (Stage) btnUsuarios.getScene().getWindow();

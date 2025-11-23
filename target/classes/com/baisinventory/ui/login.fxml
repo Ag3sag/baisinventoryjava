@@ -30,7 +30,7 @@
     <Label text="BAIS Inventory"
            styleClass="title"/>
 
-    <TextField fx:id="txtUsername" promptText="Clave de acceso"/>
+    <TextField fx:id="txtUsername" promptText="Usuario"/>
     <PasswordField fx:id="txtPassword" promptText="Contraseña"/>
 
     <HBox alignment="CENTER" prefWidth="400" spacing="10">

@@ -40,7 +40,6 @@ public class UsuariosController {
 
     @FXML
     private void initialize() {
-
         try {
             Connection conn = Conexion.getConnection();
             usuarioDAO = new UsuarioDAO(conn);
@@ -97,6 +96,11 @@ public class UsuariosController {
 
         if (claveAcceso.isEmpty() || contrasena.isEmpty() || rolNuevo == null) {
             mostrarAlerta("Error", "Todos los campos son obligatorios.");
+            return;
+        }
+
+        if (usuarioDAO.existeClave(claveAcceso)) {
+            mostrarAlerta("Error", "Ya existe un usuario con ese Nombre de Usuario.");
             return;
         }
 
